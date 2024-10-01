@@ -4,9 +4,12 @@ package com.donato.esercizio.esercizio26092024.service;
 import com.donato.esercizio.esercizio26092024.entity.Book;
 import com.donato.esercizio.esercizio26092024.model.CreateBookDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
+import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import com.donato.esercizio.esercizio26092024.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BookService {
@@ -42,7 +45,12 @@ public class BookService {
         return newBookDTO;
     }
 
+    public List<BookDTO> getBookByTipology (Tipologia tipologia) {
+        List<Book> book = bookRepository.findByTipologia(tipologia);
 
+        List<BookDTO> bookDTOS = book.stream().map(b -> new BookDTO(b.getId(),b.getTitolo(), b.getDescrizione())).toList();
+        return bookDTOS;
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.donato.esercizio.esercizio26092024.controller;
 
 
+import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import com.donato.esercizio.esercizio26092024.model.CreateBookDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.service.BookService;
@@ -8,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/book")
@@ -29,6 +32,12 @@ public class BookController {
         } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<BookDTO>> getBookByTipology(@RequestParam("tipologia") Tipologia tipologia){
+        List<BookDTO> bookDTOS = bookService.getBookByTipology(tipologia);
+        return  ResponseEntity.ok(bookDTOS);
     }
 
 

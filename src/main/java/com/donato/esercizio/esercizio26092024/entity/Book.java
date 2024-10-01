@@ -1,5 +1,6 @@
 package com.donato.esercizio.esercizio26092024.entity;
 
+import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +25,9 @@ public class Book {
     @Setter
     @Column(name="descrizione")
     private String descrizione;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="tipologia")
+    private Tipologia tipologia;
 
 }
