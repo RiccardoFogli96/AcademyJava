@@ -1,5 +1,6 @@
 package com.donato.esercizio.esercizio26092024.entity;
 
+import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,11 +19,20 @@ public class Book {
     private Long id;
 
     @Setter
-    @Column(name="titolo", nullable= false)
+    @Column(name="title", nullable= false)
     private String titolo;
 
     @Setter
-    @Column(name="descrizione")
+    @Column(name="description")
     private String descrizione;
+
+    @Setter
+    @Enumerated(EnumType.STRING)
+    @Column(name="book_type")
+    private Tipologia tipologia;
+
+    @Setter
+    @Column(name= "author_id")
+    private Long authorId;
 
 }

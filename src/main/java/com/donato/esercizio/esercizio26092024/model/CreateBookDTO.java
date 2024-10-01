@@ -16,4 +16,8 @@ public class CreateBookDTO {
     @NotNull
     private String titolo;
     private String descrizione;
+    @NotNull
+    private Tipologia tipologia;
+    private Long authorId;
+
 }

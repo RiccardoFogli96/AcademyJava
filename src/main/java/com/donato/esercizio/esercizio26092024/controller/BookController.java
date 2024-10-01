@@ -3,11 +3,14 @@ package com.donato.esercizio.esercizio26092024.controller;
 
 import com.donato.esercizio.esercizio26092024.model.CreateBookDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
+import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import com.donato.esercizio.esercizio26092024.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/book")
@@ -16,13 +19,18 @@ public class BookController {
     @Autowired
     BookService bookService;
 
+    @PostMapping("/author/{authorId}")
+    public ResponseEntity<?> addBookWithAuthor(@RequestBody @Valid CreateBookDTO createBookDTO, @PathVariable("authorId") Long id){
+
+    }
+
     @PostMapping()
     public ResponseEntity<BookDTO> addBook(@RequestBody @Valid CreateBookDTO createBookDTO) {
         return ResponseEntity.ok(bookService.addBook(createBookDTO));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getBookById(@PathVariable("{id}") Long id){
+    public ResponseEntity<?> getBookById(@PathVariable("id") Long id){
         try{
             BookDTO bookFound = bookService.getBookById(id);
             return ResponseEntity.ok(bookFound);
@@ -31,5 +39,10 @@ public class BookController {
         }
     }
 
+    @GetMapping()
+    public ResponseEntity<List<BookDTO>> getBookByTipology(@RequestParam("tipologia") Tipologia tipologia){
+        List <BookDTO> bookDTOS = bookService.getBookByTipology(tipologia);
+        return  ResponseEntity.ok(bookDTOS);
+    }
 
 }
