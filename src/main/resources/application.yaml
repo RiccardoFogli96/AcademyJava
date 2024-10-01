@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: esercizio26092024
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  datasource:
+    url: jdbc:mariadb://localhost:3306/mydatabase
+    username: root
+    password:
+    driver-class-name: org.mariadb.jdbc.Driver
