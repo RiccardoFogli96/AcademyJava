@@ -46,8 +46,7 @@ public class BookService {
 
     public List<BookDTO> getBookByTipology ( Tipologia tipologia) {
         List<Book> book = bookRepository.findByTipologia(tipologia);
-
-        return book.stream().map(b -> new BookDTO(b.getId(), b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthorId())).toList();
+        return book.stream().map(b -> new BookDTO(b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthorId(), b.getId())).toList();
     }
 
     public BookDTO addBookWithAuthor( CreateBookDTO createBookDTO, Long id) throws Exception {
