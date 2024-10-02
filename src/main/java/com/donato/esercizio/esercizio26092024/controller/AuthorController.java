@@ -3,6 +3,7 @@ package com.donato.esercizio.esercizio26092024.controller;
 import com.donato.esercizio.esercizio26092024.model.AuthorDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateAuthorDTO;
 import com.donato.esercizio.esercizio26092024.service.AuthorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +13,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/author")
+@RequiredArgsConstructor
+
 public class AuthorController {
 
     private final AuthorService authorService;
-
-    @Autowired
-    public AuthorController(AuthorService authorService){
-        this.authorService = authorService;
-    }
 
     @GetMapping("/all-authors")
     public ResponseEntity<List<AuthorDTO>>  getAllAuthors(){

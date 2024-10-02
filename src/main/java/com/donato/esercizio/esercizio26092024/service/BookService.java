@@ -9,6 +9,7 @@ import com.donato.esercizio.esercizio26092024.model.ModifyBookDTO;
 import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import com.donato.esercizio.esercizio26092024.repository.BookRepository;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,18 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final BookMapper bookMapper;
-    @Autowired
-    public BookService(BookRepository bookRepository, AuthorService authorService, BookMapper bookMapper) {
-        this.bookRepository = bookRepository;
-        this.authorService = authorService;
-        this.bookMapper = bookMapper;
-    }
-
 
     public BookDTO addBook(CreateBookDTO createBookDTO) {
         Book newBook = bookMapper.fromDTOToBook(createBookDTO);

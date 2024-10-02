@@ -6,6 +6,7 @@ import com.donato.esercizio.esercizio26092024.model.AuthorDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateAuthorDTO;
 import com.donato.esercizio.esercizio26092024.repository.AuthorRepository;
+import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,19 +16,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class AuthorService {
 
     Map<Long, Author> authorMap = new HashMap<>();
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
     private final BookService bookService;
-
-    @Autowired
-    public AuthorService(AuthorRepository authorRepository, AuthorMapper authorMapper, BookService bookService){
-        this.authorMapper = authorMapper;
-        this.authorRepository = authorRepository;
-        this.bookService = bookService;
-    }
 
     public List<AuthorDTO> getAllAuthors(){
         return authorMapper.fromAuthorListToDTOList(authorRepository.findAll());

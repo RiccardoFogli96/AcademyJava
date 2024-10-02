@@ -8,6 +8,7 @@ import com.donato.esercizio.esercizio26092024.model.ModifyBookDTO;
 import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import com.donato.esercizio.esercizio26092024.service.BookService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +19,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/book")
+@RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
 
-    @Autowired
-    public BookController(BookService bookService){
-        this.bookService = bookService;
-    }
 
     @PostMapping("/author/{authorId}")
     public ResponseEntity<?> addBookWithAuthor(@RequestBody @Valid CreateBookDTO createBookDTO, @PathVariable("authorId") Long id){
