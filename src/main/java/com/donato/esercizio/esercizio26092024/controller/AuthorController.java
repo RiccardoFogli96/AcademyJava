@@ -13,25 +13,34 @@ import java.util.List;
 @RestController
 @RequestMapping("/author")
 public class AuthorController {
+
+    private final AuthorService authorService;
+
     @Autowired
-    AuthorService authorService;
+    public AuthorController(AuthorService authorService){
+        this.authorService = authorService;
+    }
 
     @GetMapping("/all-authors")
     public ResponseEntity<List<AuthorDTO>>  getAllAuthors(){
-        return ResponseEntity.status(HttpStatus.FOUND).body(authorService.getAllAuthors());
+        List<AuthorDTO> authorDTOList = authorService.getAllAuthors();
+        return ResponseEntity.status(HttpStatus.FOUND).body(authorDTOList);
     }
+
     @GetMapping("/{authorId}")
     public ResponseEntity<?> getAuthorById(@PathVariable("authorId") Long id){
         try {
-            return ResponseEntity.status(HttpStatus.FOUND).body(authorService.getAuthorById(id));
+            AuthorDTO authorDTO = authorService.getAuthorById(id);
+            return ResponseEntity.status(HttpStatus.FOUND).body(authorDTO);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
     @PostMapping()
     public ResponseEntity<?> addNewAuthor(@RequestBody CreateAuthorDTO authorDTO){
         try{
-            return  ResponseEntity.status(HttpStatus.CREATED).body(authorService.addNewAuthor(authorDTO));
+            AuthorDTO newAuthor = authorService.addNewAuthor(authorDTO);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(newAuthor);
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
