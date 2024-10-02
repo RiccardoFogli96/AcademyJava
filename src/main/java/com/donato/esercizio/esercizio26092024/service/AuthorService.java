@@ -3,6 +3,7 @@ package com.donato.esercizio.esercizio26092024.service;
 import com.donato.esercizio.esercizio26092024.entity.Author;
 import com.donato.esercizio.esercizio26092024.mapper.AuthorMapper;
 import com.donato.esercizio.esercizio26092024.model.AuthorDTO;
+import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateAuthorDTO;
 import com.donato.esercizio.esercizio26092024.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,15 @@ public class AuthorService {
     AuthorRepository authorRepository;
     @Autowired
     AuthorMapper authorMapper;
+    @Autowired
+    BookService bookService;
 
     public List<AuthorDTO> getAllAuthors(){
         return authorMapper.fromAuthorListToDTOList(authorRepository.findAll());
     }
 
     public AuthorDTO getAuthorById(Long id)throws Exception{
-        Author author = authorRepository.findById(id).orElseThrow(() -> new Exception("Ciaoo"));
+        Author author = authorRepository.findById(id).orElseThrow(() -> new Exception("ID not found!"));
         return authorMapper.fromAuthorToDTO(author);
     }
     public AuthorDTO addNewAuthor(CreateAuthorDTO authorDTO) throws Exception{
@@ -35,5 +38,10 @@ public class AuthorService {
          Author author = authorMapper.fromDTOtoAuthor(authorDTO);
          authorRepository.save(author);
          return authorMapper.fromAuthorToDTO(author);
+    }
+    public boolean deleteAuthor(long id){
+        bookService.deleteBookByIdAuthor(id);
+        authorRepository.deleteById(id);
+        return true;
     }
 }
