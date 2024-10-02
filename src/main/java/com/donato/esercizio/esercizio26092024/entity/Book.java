@@ -2,16 +2,13 @@ package com.donato.esercizio.esercizio26092024.entity;
 
 import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "book")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Builder
 public class Book {
 
     @Id

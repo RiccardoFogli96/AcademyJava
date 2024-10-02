@@ -2,6 +2,7 @@ package com.donato.esercizio.esercizio26092024.service;
 
 
 import com.donato.esercizio.esercizio26092024.entity.Book;
+import com.donato.esercizio.esercizio26092024.mapper.BookMapper;
 import com.donato.esercizio.esercizio26092024.model.CreateBookDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.Tipologia;
@@ -20,44 +21,26 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorService authorService;
-
+    private final BookMapper bookMapper;
     @Autowired
-    public BookService(BookRepository bookRepository, AuthorService authorService) {
+    public BookService(BookRepository bookRepository, AuthorService authorService, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
+        this.bookMapper = bookMapper;
     }
 
 
     public BookDTO addBook (CreateBookDTO createBookDTO){
-
-        Book newBook = new Book();
-        newBook.setTitolo(createBookDTO.getTitolo());
-        newBook.setDescrizione(createBookDTO.getDescrizione());
-        newBook.setTipologia(createBookDTO.getTipologia());
-        newBook.setAuthorId(createBookDTO.getAuthorId());
-
+        Book newBook = bookMapper.fromDTOToBook(createBookDTO);
         newBook = bookRepository.save(newBook);
 
-        BookDTO newBookResponseDTO = new BookDTO();
-        newBookResponseDTO.setId(newBook.getId());
-        newBookResponseDTO.setTitolo(newBook.getTitolo());
-        newBookResponseDTO.setDescrizione(newBook.getDescrizione());
-        newBookResponseDTO.setTipologia(newBook.getTipologia());
-        newBookResponseDTO.setAuthorId(newBook.getAuthorId());
-
-        return newBookResponseDTO;
+        return bookMapper.fromBookToDTO(newBook);
     }
 
     public BookDTO getBookById (Long id) throws Exception{
         Book book = bookRepository.findById(id).orElseThrow(()-> new Exception("Book not found"));
 
-        BookDTO newBookDTO = new BookDTO();
-        newBookDTO.setId(book.getId());
-        newBookDTO.setTitolo(book.getTitolo());
-        newBookDTO.setDescrizione(book.getDescrizione());
-        newBookDTO.setTipologia(book.getTipologia());
-
-        return newBookDTO;
+        return bookMapper.fromBookToDTO(book);
     }
 
     public List<BookDTO> getBookByTipology ( Tipologia tipologia) {
