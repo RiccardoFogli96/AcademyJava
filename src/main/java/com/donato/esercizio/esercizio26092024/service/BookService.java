@@ -18,10 +18,14 @@ import java.util.List;
 @Service
 public class BookService {
 
+    private final BookRepository bookRepository;
+    private final AuthorService authorService;
+
     @Autowired
-    BookRepository bookRepository;
-    @Autowired
-    AuthorService authorService;
+    public BookService(BookRepository bookRepository, AuthorService authorService) {
+        this.bookRepository = bookRepository;
+        this.authorService = authorService;
+    }
 
 
     public BookDTO addBook (CreateBookDTO createBookDTO){
@@ -59,8 +63,7 @@ public class BookService {
     public List<BookDTO> getBookByTipology ( Tipologia tipologia) {
         List<Book> book = bookRepository.findByTipologia(tipologia);
 
-        List<BookDTO> bookDTOS = book.stream().map(b -> new BookDTO(b.getId(),b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthorId())).toList();
-        return bookDTOS;
+        return book.stream().map(b -> new BookDTO(b.getId(),b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthorId())).toList();
     }
 
     public BookDTO addBookWithAuthor( CreateBookDTO createBookDTO, Long id) throws Exception {
