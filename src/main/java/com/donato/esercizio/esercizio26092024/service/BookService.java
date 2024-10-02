@@ -5,6 +5,7 @@ import com.donato.esercizio.esercizio26092024.entity.Book;
 import com.donato.esercizio.esercizio26092024.mapper.BookMapper;
 import com.donato.esercizio.esercizio26092024.model.CreateBookDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
+import com.donato.esercizio.esercizio26092024.model.ModifyBookDTO;
 import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import com.donato.esercizio.esercizio26092024.repository.BookRepository;
 import jakarta.validation.Valid;
@@ -77,5 +78,16 @@ public class BookService {
             bookRepository.deleteById(i.getId());
         }
         return true;
+    }
+
+    public BookDTO changeTitleToBookDTO(Long authorId, ModifyBookDTO modifyBookDTO)throws Exception{
+        Book book = bookRepository.findByAuthorIdAndId(authorId, modifyBookDTO.getId());
+        if(book == null){
+            throw new Exception("Non Esisto");
+        }
+
+        book.setTitolo(modifyBookDTO.getTitolo());
+        bookRepository.save(book);
+        return bookMapper.fromBookToDTO(book);
     }
 }

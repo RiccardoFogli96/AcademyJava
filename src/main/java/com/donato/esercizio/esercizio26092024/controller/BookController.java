@@ -1,8 +1,10 @@
 package com.donato.esercizio.esercizio26092024.controller;
 
 
+import com.donato.esercizio.esercizio26092024.entity.Book;
 import com.donato.esercizio.esercizio26092024.model.CreateBookDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
+import com.donato.esercizio.esercizio26092024.model.ModifyBookDTO;
 import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import com.donato.esercizio.esercizio26092024.service.BookService;
 import jakarta.validation.Valid;
@@ -55,6 +57,16 @@ public class BookController {
     public ResponseEntity<List<BookDTO>> getBookByTipology(@RequestParam("tipologia") Tipologia tipologia){
         List <BookDTO> bookDTOS = bookService.getBookByTipology(tipologia);
         return  ResponseEntity.status(HttpStatus.FOUND).body(bookDTOS);
+    }
+
+    @PatchMapping("/manage/{authorId}")
+    public ResponseEntity<?> changeTitleByAuthorId(@PathVariable("authorId") Long id, ModifyBookDTO modifyBookDTO){
+        try{
+            BookDTO bookDTO = bookService.changeTitleToBookDTO(id,modifyBookDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(bookDTO);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 }
