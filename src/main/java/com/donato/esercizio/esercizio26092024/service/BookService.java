@@ -2,11 +2,14 @@ package com.donato.esercizio.esercizio26092024.service;
 
 
 import com.donato.esercizio.esercizio26092024.entity.Book;
+import com.donato.esercizio.esercizio26092024.mapper.BookMapper;
 import com.donato.esercizio.esercizio26092024.model.CreateBookDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
+import com.donato.esercizio.esercizio26092024.model.ModifyBookDTO;
 import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import com.donato.esercizio.esercizio26092024.repository.BookRepository;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,54 +20,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
 
-    @Autowired
-    BookRepository bookRepository;
-    @Autowired
-    AuthorService authorService;
-
+    private final BookRepository bookRepository;
+    private final AuthorService authorService;
+    private final BookMapper bookMapper;
 
     public BookDTO addBook(CreateBookDTO createBookDTO) {
-
-        Book newBook = new Book();
-        newBook.setTitolo(createBookDTO.getTitolo());
-        newBook.setDescrizione(createBookDTO.getDescrizione());
-        newBook.setTipologia(createBookDTO.getTipologia());
-        newBook.setAuthorId(createBookDTO.getAuthorId());
-
+        Book newBook = bookMapper.fromDTOToBook(createBookDTO);
         newBook = bookRepository.save(newBook);
 
-        BookDTO newBookResponseDTO = new BookDTO();
-        newBookResponseDTO.setId(newBook.getId());
-        newBookResponseDTO.setTitolo(newBook.getTitolo());
-        newBookResponseDTO.setDescrizione(newBook.getDescrizione());
-        newBookResponseDTO.setTipologia(newBook.getTipologia());
-        newBookResponseDTO.setAuthorId(newBook.getAuthorId());
-
-        return newBookResponseDTO;
+        return bookMapper.fromBookToDTO(newBook);
     }
 
-    public BookDTO getBookById(Long id) throws Exception {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new Exception("Book not found"));
+    public BookDTO getBookById (Long id) throws Exception{
+        Book book = bookRepository.findById(id).orElseThrow(()-> new Exception("Book not found"));
 
-        BookDTO newBookDTO = new BookDTO();
-        newBookDTO.setId(book.getId());
-        newBookDTO.setTitolo(book.getTitolo());
-        newBookDTO.setDescrizione(book.getDescrizione());
-        newBookDTO.setTipologia(book.getTipologia());
-
-        return newBookDTO;
+        return bookMapper.fromBookToDTO(book);
     }
 
-    public List<BookDTO> getBookByTipology(Tipologia tipologia) {
+    public List<BookDTO> getBookByTipology ( Tipologia tipologia) {
         List<Book> book = bookRepository.findByTipologia(tipologia);
-
-        List<BookDTO> bookDTOS = book.stream().map(b -> new BookDTO(b.getId(), b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthorId())).toList();
-        return bookDTOS;
+        return book.stream().map(b -> new BookDTO(b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthorId(), b.getId())).toList();
     }
 
-    public BookDTO addBookWithAuthor(CreateBookDTO createBookDTO, Long id) throws Exception {
+    public BookDTO addBookWithAuthor( CreateBookDTO createBookDTO, Long id) throws Exception {
         authorService.getAuthorById(id);
         createBookDTO.setAuthorId(id);
         return addBook(createBookDTO);
@@ -92,5 +73,16 @@ public class BookService {
             bookRepository.deleteById(i.getId());
         }
         return true;
+    }
+
+    public BookDTO changeTitleToBookDTO(Long authorId, ModifyBookDTO modifyBookDTO)throws Exception{
+        Book book = bookRepository.findByAuthorIdAndId(authorId, modifyBookDTO.getId());
+        if(book == null){
+            throw new Exception("Non Esisto");
+        }
+
+        book.setTitolo(modifyBookDTO.getTitolo());
+        bookRepository.save(book);
+        return bookMapper.fromBookToDTO(book);
     }
 }

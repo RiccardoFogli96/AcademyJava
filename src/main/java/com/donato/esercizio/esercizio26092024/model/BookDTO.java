@@ -1,23 +1,23 @@
 package com.donato.esercizio.esercizio26092024.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookDTO {
+@SuperBuilder
+public class BookDTO extends CreateBookDTO{
 
     private Long id;
 
-    private String titolo;
-
-    private String descrizione;
-
-    private Tipologia tipologia;
-
-    private Long authorId;
+    public BookDTO(@NotNull String titolo, String descrizione, @NotNull Tipologia tipologia, Long authorId, Long id) {
+        super(titolo, descrizione, tipologia, authorId);
+        this.id = id;
+    }
 }

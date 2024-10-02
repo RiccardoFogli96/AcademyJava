@@ -6,6 +6,8 @@ import com.donato.esercizio.esercizio26092024.model.AuthorDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateAuthorDTO;
 import com.donato.esercizio.esercizio26092024.repository.AuthorRepository;
+import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,21 +16,21 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class AuthorService {
+
     Map<Long, Author> authorMap = new HashMap<>();
-    @Autowired
-    AuthorRepository authorRepository;
-    @Autowired
-    AuthorMapper authorMapper;
-    @Autowired
-    BookService bookService;
+    private final AuthorRepository authorRepository;
+    private final AuthorMapper authorMapper;
+    private final BookService bookService;
 
     public List<AuthorDTO> getAllAuthors(){
         return authorMapper.fromAuthorListToDTOList(authorRepository.findAll());
     }
 
     public AuthorDTO getAuthorById(Long id)throws Exception{
-        Author author = authorRepository.findById(id).orElseThrow(() -> new Exception("ID not found!"));
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new Exception("Ciaoo"));
         return authorMapper.fromAuthorToDTO(author);
     }
     public AuthorDTO addNewAuthor(CreateAuthorDTO authorDTO) throws Exception{
