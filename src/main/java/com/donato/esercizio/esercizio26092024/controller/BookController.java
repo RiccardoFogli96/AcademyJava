@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,12 @@ public class BookController {
 
     @PostMapping("/author/{authorId}")
     public ResponseEntity<?> addBookWithAuthor(@RequestBody @Valid CreateBookDTO createBookDTO, @PathVariable("authorId") Long id){
-
+        try{
+            BookDTO newBookDTO = bookService.addBookWithAuthor(createBookDTO, id);
+            return ResponseEntity.ok(newBookDTO);
+        }catch (Exception e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
     }
 
     @PostMapping()

@@ -45,4 +45,9 @@ public class AuthorController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+    //Delete id di author, se author c'e libro, elimina anche
+    @DeleteMapping("/{authorID}")
+    public ResponseEntity<?> deleteAuthor(@PathVariable("authorID") Long id){
+
+    }
 }

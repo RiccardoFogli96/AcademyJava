@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,7 +31,7 @@ public class BookService {
     }
 
 
-    public BookDTO addBook (CreateBookDTO createBookDTO){
+    public BookDTO addBook(CreateBookDTO createBookDTO) {
         Book newBook = bookMapper.fromDTOToBook(createBookDTO);
         newBook = bookRepository.save(newBook);
 
@@ -46,12 +47,36 @@ public class BookService {
     public List<BookDTO> getBookByTipology ( Tipologia tipologia) {
         List<Book> book = bookRepository.findByTipologia(tipologia);
 
-        return book.stream().map(b -> new BookDTO(b.getId(),b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthorId())).toList();
+        return book.stream().map(b -> new BookDTO(b.getId(), b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthorId())).toList();
     }
 
     public BookDTO addBookWithAuthor( CreateBookDTO createBookDTO, Long id) throws Exception {
         authorService.getAuthorById(id);
         createBookDTO.setAuthorId(id);
         return addBook(createBookDTO);
+    }
+
+    public List<BookDTO> getBookByIdAuthor(long idAuthor) {
+        List<Book> listBookAuthor = bookRepository.findByAuthorId(idAuthor);
+        List<BookDTO> listBookDTOAuthor = new ArrayList<>();
+        for (Book i : listBookAuthor) {
+            BookDTO newBookResponseDTO = new BookDTO();
+            newBookResponseDTO.setId(i.getId());
+            newBookResponseDTO.setTitolo(i.getTitolo());
+            newBookResponseDTO.setDescrizione(i.getDescrizione());
+            newBookResponseDTO.setTipologia(i.getTipologia());
+            newBookResponseDTO.setAuthorId(i.getAuthorId());
+            listBookDTOAuthor.add(newBookResponseDTO);
+        }
+
+        return listBookDTOAuthor;
+    }
+
+    public boolean deleteBookByIdAuthor(long idAuthor){
+        List<BookDTO> listBookDTO = this.getBookByIdAuthor(idAuthor);
+        for(BookDTO i : listBookDTO){
+            bookRepository.deleteById(i.getId());
+        }
+        return true;
     }
 }

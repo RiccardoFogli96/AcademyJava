@@ -3,6 +3,7 @@ package com.donato.esercizio.esercizio26092024.service;
 import com.donato.esercizio.esercizio26092024.entity.Author;
 import com.donato.esercizio.esercizio26092024.mapper.AuthorMapper;
 import com.donato.esercizio.esercizio26092024.model.AuthorDTO;
+import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateAuthorDTO;
 import com.donato.esercizio.esercizio26092024.repository.AuthorRepository;
 import org.checkerframework.checker.units.qual.A;
@@ -19,11 +20,13 @@ public class AuthorService {
     Map<Long, Author> authorMap = new HashMap<>();
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
+    private final BookService bookService;
 
     @Autowired
-    public AuthorService(AuthorRepository authorRepository, AuthorMapper authorMapper){
+    public AuthorService(AuthorRepository authorRepository, AuthorMapper authorMapper, BookService bookService){
         this.authorMapper = authorMapper;
         this.authorRepository = authorRepository;
+        this.bookService = bookService;
     }
 
     public List<AuthorDTO> getAllAuthors(){
@@ -42,5 +45,10 @@ public class AuthorService {
          Author author = authorMapper.fromDTOtoAuthor(authorDTO);
          authorRepository.save(author);
          return authorMapper.fromAuthorToDTO(author);
+    }
+    public boolean deleteAuthor(long id){
+        bookService.deleteBookByIdAuthor(id);
+        authorRepository.deleteById(id);
+        return true;
     }
 }
