@@ -7,8 +7,8 @@ import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateAuthorDTO;
 import com.donato.esercizio.esercizio26092024.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -16,13 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
+
 public class AuthorService {
 
-    Map<Long, Author> authorMap = new HashMap<>();
-    private final AuthorRepository authorRepository;
-    private final AuthorMapper authorMapper;
-    private final BookService bookService;
+    @Autowired
+    AuthorRepository authorRepository;
+    @Autowired
+    AuthorMapper authorMapper;
+    @Autowired
+    BookService bookService;
 
     public List<AuthorDTO> getAllAuthors(){
         return authorMapper.fromAuthorListToDTOList(authorRepository.findAll());
@@ -30,7 +32,7 @@ public class AuthorService {
 
     public AuthorDTO getAuthorById(Long id)throws Exception{
         Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new Exception("Ciaoo"));
+                .orElseThrow(() -> new Exception("Author with Id" + id + " not found"));
         return authorMapper.fromAuthorToDTO(author);
     }
     public AuthorDTO addNewAuthor(CreateAuthorDTO authorDTO) throws Exception{
@@ -42,6 +44,12 @@ public class AuthorService {
          return authorMapper.fromAuthorToDTO(author);
     }
     public boolean deleteAuthor(long id){
+        bookService.deleteBookByIdAuthor(id);
+        authorRepository.deleteById(id);
+        return true;
+    }
+
+    public boolean deleteAuthorAndBooks(long id){
         bookService.deleteBookByIdAuthor(id);
         authorRepository.deleteById(id);
         return true;

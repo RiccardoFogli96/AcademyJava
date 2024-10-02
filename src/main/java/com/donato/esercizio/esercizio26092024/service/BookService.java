@@ -11,6 +11,7 @@ import com.donato.esercizio.esercizio26092024.repository.BookRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class BookService {
-
-    private final BookRepository bookRepository;
-    private final AuthorService authorService;
-    private final BookMapper bookMapper;
+    @Autowired
+    BookRepository bookRepository;
+    @Autowired
+    AuthorService authorService;
+    @Autowired
+    BookMapper bookMapper;
 
     public BookDTO addBook(CreateBookDTO createBookDTO) {
         Book newBook = bookMapper.fromDTOToBook(createBookDTO);
