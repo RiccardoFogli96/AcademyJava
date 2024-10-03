@@ -15,11 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/author")
-@RequiredArgsConstructor
 
 public class AuthorController {
-
-    private final AuthorService authorService;
+    @Autowired
+    AuthorService authorService;
     private Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
     @GetMapping("/all-authors")
@@ -52,17 +51,17 @@ public class AuthorController {
         }
     }
 
-    @DeleteMapping("/{authorID}")
+    /*@DeleteMapping("/{authorID}")
     public ResponseEntity deleteAuthorAndBooks(@PathVariable("authorID") Long id){
     authorService.deleteAuthorAndBooks(id);
     logger.info("Author with Id {} deleted with his books", id);
     return ResponseEntity.status(200).build();
-    }
+    }*/
 
-    @DeleteMapping("/{authorId}")
+   /* @DeleteMapping("/{authorId}")
     public ResponseEntity deleteAuthor(@PathVariable ("authorId") Long id){
         authorService.deleteAuthor(id);
         logger.info("Author with Id {} deleted", id);
         return ResponseEntity.status(200).build();
-    }
+    }*/
 }

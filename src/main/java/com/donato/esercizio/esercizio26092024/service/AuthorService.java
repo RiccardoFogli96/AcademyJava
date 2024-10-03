@@ -7,6 +7,7 @@ import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateAuthorDTO;
 import com.donato.esercizio.esercizio26092024.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -16,15 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-
+@RequiredArgsConstructor
 public class AuthorService {
 
-    @Autowired
-    AuthorRepository authorRepository;
-    @Autowired
-    AuthorMapper authorMapper;
-    @Autowired
-    BookService bookService;
+    private final AuthorRepository authorRepository;
+    private final AuthorMapper authorMapper;
+    @Setter
+    private BookService bookService;
 
     public List<AuthorDTO> getAllAuthors(){
         return authorMapper.fromAuthorListToDTOList(authorRepository.findAll());
@@ -53,5 +52,7 @@ public class AuthorService {
         bookService.deleteBookByIdAuthor(id);
         authorRepository.deleteById(id);
         return true;
+
     }
+
 }
