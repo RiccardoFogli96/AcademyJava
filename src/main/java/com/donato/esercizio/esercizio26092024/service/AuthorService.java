@@ -6,9 +6,11 @@ import com.donato.esercizio.esercizio26092024.model.AuthorDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateAuthorDTO;
 import com.donato.esercizio.esercizio26092024.repository.AuthorRepository;
+import com.donato.esercizio.esercizio26092024.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,10 +21,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthorService {
 
-    Map<Long, Author> authorMap = new HashMap<>();
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
-    private final BookService bookService;
+    private final BookRepository bookRepository;
+
 
     public List<AuthorDTO> getAllAuthors(){
         return authorMapper.fromAuthorListToDTOList(authorRepository.findAll());
@@ -30,7 +32,7 @@ public class AuthorService {
 
     public AuthorDTO getAuthorById(Long id)throws Exception{
         Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new Exception("Ciaoo"));
+                .orElseThrow(() -> new Exception("Author with Id" + id + " not found"));
         return authorMapper.fromAuthorToDTO(author);
     }
     public AuthorDTO addNewAuthor(CreateAuthorDTO authorDTO) throws Exception{
@@ -42,8 +44,18 @@ public class AuthorService {
          return authorMapper.fromAuthorToDTO(author);
     }
     public boolean deleteAuthor(long id){
-        bookService.deleteBookByIdAuthor(id);
+        bookRepository.deleteByAuthorId(id);
         authorRepository.deleteById(id);
         return true;
+    }
+
+    public AuthorDTO updateAuthor(CreateAuthorDTO createAuthorDTO, Long id) throws Exception {
+        if(!authorRepository.existsById(id)){
+           throw new Exception("This Author doesn't exist");
+        }
+        Author updateAuthor = authorMapper.fromDTOtoAuthor(createAuthorDTO);
+        updateAuthor.setId(id);
+        authorRepository.save(updateAuthor);
+        return authorMapper.fromAuthorToDTO(updateAuthor);
     }
 }

@@ -10,4 +10,5 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 	List<Book> findByTipologia(Tipologia tipologia);
 	List<Book> findByAuthorId(Long authorId);
 	Book findByAuthorIdAndId(Long authorId, Long bookId);
+	void deleteByAuthorId(Long authorId);
 }
