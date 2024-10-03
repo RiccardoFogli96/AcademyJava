@@ -9,5 +9,5 @@ public class Esercizio26092024Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Esercizio26092024Application.class, args);
 	}
-
+	/*Commento di prova*/
 }
