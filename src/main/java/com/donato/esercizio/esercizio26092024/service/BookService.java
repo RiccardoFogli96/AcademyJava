@@ -8,8 +8,10 @@ import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.ModifyBookDTO;
 import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import com.donato.esercizio.esercizio26092024.repository.BookRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,8 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final AuthorService authorService;
+    @Setter
+    private AuthorService authorService;
     private final BookMapper bookMapper;
 
     public BookDTO addBook(CreateBookDTO createBookDTO) {
@@ -85,4 +88,5 @@ public class BookService {
         bookRepository.save(book);
         return bookMapper.fromBookToDTO(book);
     }
+
 }
