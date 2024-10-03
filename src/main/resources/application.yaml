@@ -11,3 +11,7 @@ spring:
     username: root
     password: admin123
     driver-class-name: com.mysql.cj.jdbc.Driver
+logging:
+  level:
+    root: INFO
+    com.donato.esercizio.esercizio26092024.service.BookService: INFO

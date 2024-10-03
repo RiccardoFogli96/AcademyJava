@@ -4,6 +4,7 @@ import com.donato.esercizio.esercizio26092024.model.AuthorDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateAuthorDTO;
 import com.donato.esercizio.esercizio26092024.service.AuthorService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +14,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/author")
-
 public class AuthorController {
     @Autowired
     AuthorService authorService;
-    private Logger logger = LoggerFactory.getLogger(AuthorController.class);
+
+    //private Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
     @GetMapping("/all-authors")
     public ResponseEntity<List<AuthorDTO>>  getAllAuthors(){
         List<AuthorDTO> authorDTOList = authorService.getAllAuthors();
-        logger.info("Get all Authors");
+        log.debug("Get all Authors");
         return ResponseEntity.status(HttpStatus.FOUND).body(authorDTOList);
     }
 
@@ -32,10 +34,10 @@ public class AuthorController {
     public ResponseEntity<?> getAuthorById(@PathVariable("authorId") Long id){
         try {
             AuthorDTO authorDTO = authorService.getAuthorById(id);
-            logger.info("Author with id: {} found", id);
+            log.debug("Author with id: {} found", id);
             return ResponseEntity.status(HttpStatus.FOUND).body(authorDTO);
         }catch (Exception e){
-            logger.error("Error in getting Author by Id: {}", e.getMessage());
+            log.error("Error in getting Author by Id: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -43,25 +45,28 @@ public class AuthorController {
     public ResponseEntity<?> addNewAuthor(@RequestBody CreateAuthorDTO authorDTO){
         try{
             AuthorDTO newAuthor = authorService.addNewAuthor(authorDTO);
-            logger.info("Author added in database");
+            log.debug("Author added in database {}", authorDTO);
             return  ResponseEntity.status(HttpStatus.CREATED).body(newAuthor);
         }catch(Exception e){
-            logger.error("Error in add new Author {}", e.getMessage());
+            log.error("Error in add new Author {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    /*@DeleteMapping("/{authorID}")
-    public ResponseEntity deleteAuthorAndBooks(@PathVariable("authorID") Long id){
-    authorService.deleteAuthorAndBooks(id);
-    logger.info("Author with Id {} deleted with his books", id);
-    return ResponseEntity.status(200).build();
-    }*/
-
-   /* @DeleteMapping("/{authorId}")
+    @DeleteMapping("/{authorId}")
     public ResponseEntity deleteAuthor(@PathVariable ("authorId") Long id){
         authorService.deleteAuthor(id);
-        logger.info("Author with Id {} deleted", id);
+        log.debug("Author with Id {} deleted", id);
         return ResponseEntity.status(200).build();
-    }*/
+    }
+
+    @PutMapping("/{authorID}")
+    public ResponseEntity<?> updateAuthor(@PathVariable ("authorID") Long id, @RequestBody AuthorDTO createAuthorDTO){
+        try{
+            return ResponseEntity.ok(authorService.updateAuthor(createAuthorDTO, id));
+        } catch (Exception e){
+            log.error("Error in update author with id {}", id, e);
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
 }

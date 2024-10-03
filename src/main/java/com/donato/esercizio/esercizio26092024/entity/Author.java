@@ -5,6 +5,7 @@ import lombok.*;
 
 @Entity(name = "author")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -13,13 +14,10 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Setter
     @Column(name = "name", nullable = false)
     private String name;
-    @Setter
     @Column(name = "surname", nullable = false)
     private String surname;
-    @Setter
     @Column(name = "biography")
     private String biography;
 

@@ -29,10 +29,7 @@ public class BookService {
     private final AuthorService authorService;
     private final BookMapper bookMapper;
 
-    @PostConstruct
-    public void init(){
-        authorService.setBookService(this);
-    }
+
 
     public BookDTO addBook(CreateBookDTO createBookDTO) {
         Book newBook = bookMapper.fromDTOToBook(createBookDTO);
@@ -87,7 +84,6 @@ public class BookService {
         if(book == null){
             throw new Exception("Non Esisto");
         }
-
         book.setTitolo(modifyBookDTO.getTitolo());
         bookRepository.save(book);
         return bookMapper.fromBookToDTO(book);
