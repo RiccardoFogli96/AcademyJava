@@ -4,6 +4,8 @@ import com.donato.esercizio.esercizio26092024.model.Tipologia;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity(name = "book")
 @Getter
 @AllArgsConstructor
@@ -31,5 +33,8 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
+
+    @OneToMany(mappedBy = "book")
+    private List<Rental> rentals;
 
 }
