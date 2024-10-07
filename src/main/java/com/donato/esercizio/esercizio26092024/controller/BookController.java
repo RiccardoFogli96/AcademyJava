@@ -41,10 +41,15 @@ public class BookController {
     }
 
     @PostMapping()
-    public ResponseEntity<BookDTO> addBook(@RequestBody @Valid CreateBookDTO createBookDTO) {
-        BookDTO bookDTO = bookService.addBook(createBookDTO);
-        logger.info("Added a Book");
-        return ResponseEntity.status(HttpStatus.CREATED).body(bookDTO);
+    public ResponseEntity<?> addBook(@RequestBody @Valid CreateBookDTO createBookDTO) {
+        try{
+            BookDTO bookDTO = bookService.addBook(createBookDTO);
+            logger.info("Added a Book");
+            return ResponseEntity.status(HttpStatus.CREATED).body(bookDTO);
+        } catch (Exception e){
+            logger.error("Generic error in add book {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")

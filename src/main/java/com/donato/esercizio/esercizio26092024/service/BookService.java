@@ -1,12 +1,11 @@
 package com.donato.esercizio.esercizio26092024.service;
 
 
+import com.donato.esercizio.esercizio26092024.entity.Author;
 import com.donato.esercizio.esercizio26092024.entity.Book;
+import com.donato.esercizio.esercizio26092024.mapper.AuthorMapper;
 import com.donato.esercizio.esercizio26092024.mapper.BookMapper;
-import com.donato.esercizio.esercizio26092024.model.CreateBookDTO;
-import com.donato.esercizio.esercizio26092024.model.BookDTO;
-import com.donato.esercizio.esercizio26092024.model.ModifyBookDTO;
-import com.donato.esercizio.esercizio26092024.model.Tipologia;
+import com.donato.esercizio.esercizio26092024.model.*;
 import com.donato.esercizio.esercizio26092024.repository.BookRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
@@ -28,11 +27,16 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final BookMapper bookMapper;
+    private final AuthorMapper authorMapper;
 
 
 
-    public BookDTO addBook(CreateBookDTO createBookDTO) {
-        Book newBook = bookMapper.fromDTOToBook(createBookDTO);
+    public BookDTO addBook(CreateBookDTO createBookDTO) throws Exception {
+
+        AuthorDTO authorDTO = authorService.getAuthorById(createBookDTO.getAuthorId());
+        Author author = authorMapper.fromDTOtoAuthor(authorDTO);
+
+        Book newBook = bookMapper.fromDTOToBook(createBookDTO, author);
         newBook = bookRepository.save(newBook);
 
         return bookMapper.fromBookToDTO(newBook);
@@ -46,7 +50,7 @@ public class BookService {
 
     public List<BookDTO> getBookByTipology ( Tipologia tipologia) {
         List<Book> book = bookRepository.findByTipologia(tipologia);
-        return book.stream().map(b -> new BookDTO(b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthorId(), b.getId())).toList();
+        return book.stream().map(b -> new BookDTO(b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthor().getId(), b.getId())).toList();
     }
 
     public BookDTO addBookWithAuthor( CreateBookDTO createBookDTO, Long id) throws Exception {
@@ -64,7 +68,7 @@ public class BookService {
             newBookResponseDTO.setTitolo(i.getTitolo());
             newBookResponseDTO.setDescrizione(i.getDescrizione());
             newBookResponseDTO.setTipologia(i.getTipologia());
-            newBookResponseDTO.setAuthorId(i.getAuthorId());
+            newBookResponseDTO.setAuthorId(i.getAuthor().getId());
             listBookDTOAuthor.add(newBookResponseDTO);
         }
 

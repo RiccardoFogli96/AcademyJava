@@ -3,6 +3,8 @@ package com.donato.esercizio.esercizio26092024.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity(name = "author")
 @Getter
 @Setter
@@ -21,6 +23,8 @@ public class Author {
     @Column(name = "biography")
     private String biography;
 
+    @OneToMany(mappedBy = "author")
+    List<Book> bookList;
 
     public Author(String name, String surname, String biography) {
         this.name = name;

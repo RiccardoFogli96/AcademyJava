@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/author")
 public class AuthorController {
+
     @Autowired
     AuthorService authorService;
 
@@ -41,6 +42,7 @@ public class AuthorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
     @PostMapping()
     public ResponseEntity<?> addNewAuthor(@RequestBody CreateAuthorDTO authorDTO){
         try{

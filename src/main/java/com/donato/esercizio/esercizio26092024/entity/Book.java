@@ -28,8 +28,8 @@ public class Book {
     @Column(name="book_type")
     private Tipologia tipologia;
 
-    @Setter
-    @Column(name= "author_id")
-    private Long authorId;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
 
 }

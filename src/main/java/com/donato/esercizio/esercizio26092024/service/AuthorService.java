@@ -35,6 +35,7 @@ public class AuthorService {
                 .orElseThrow(() -> new Exception("Author with Id" + id + " not found"));
         return authorMapper.fromAuthorToDTO(author);
     }
+
     public AuthorDTO addNewAuthor(CreateAuthorDTO authorDTO) throws Exception{
         if(authorDTO.getName() == null || authorDTO.getSurname() == null){
             throw new Exception("Either name or surname is null");
