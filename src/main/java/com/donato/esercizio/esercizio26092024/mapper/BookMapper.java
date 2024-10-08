@@ -6,10 +6,15 @@ import com.donato.esercizio.esercizio26092024.entity.Book;
 import com.donato.esercizio.esercizio26092024.model.AuthorDTO;
 import com.donato.esercizio.esercizio26092024.model.BookDTO;
 import com.donato.esercizio.esercizio26092024.model.CreateBookDTO;
+import com.donato.esercizio.esercizio26092024.repository.AuthorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class BookMapper {
+
+    private final AuthorRepository authorRepository;
 
     public Book fromDTOToBook(CreateBookDTO createBookDTO, Author author){
         return Book.builder()
@@ -29,6 +34,16 @@ public class BookMapper {
                 .tipologia(book.getTipologia())
                 .authorId(author.getId())
                 .descrizione(book.getDescrizione())
+                .build();
+    }
+
+    public Book toBook (BookDTO bookDTO){
+        return Book
+                .builder()
+                .titolo(bookDTO.getTitolo())
+                .descrizione(bookDTO.getDescrizione())
+                .tipologia(bookDTO.getTipologia())
+                .author(authorRepository.findById(bookDTO.getAuthorId()).get())
                 .build();
     }
 
