@@ -37,7 +37,7 @@ public class CustomerService {
 	public CustomerDTO getCustomerByID (Long id) throws Exception {
 		Customer found = customerRepository
 				.findById(id)
-				.orElseThrow(() -> new Exception ("Book not found"));
+				.orElseThrow(() -> new Exception ("Customer not found"));
 		return customerMapper.toCustomerDTO(found);
 	}
 
