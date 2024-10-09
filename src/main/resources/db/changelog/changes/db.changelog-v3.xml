@@ -12,6 +12,7 @@
                 referencedTableName="customer"
                 referencedColumnNames="id"
                 constraintName="fk_rental_customer"/>
+
         <addForeignKeyConstraint
                 baseTableName="rental"
                 baseColumnNames="book_id"
