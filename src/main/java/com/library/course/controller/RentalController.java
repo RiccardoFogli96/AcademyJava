@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/rentals")
 @RequiredArgsConstructor
@@ -24,6 +26,17 @@ public class RentalController {
             RentalDTO rentalDTO = rentalService.createRentalDTO(customerId,bookId,createRentalDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(rentalDTO);
 
+        }catch (Exception e){
+            log.error("Error in addRental {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/customers/{customerId}")
+    public ResponseEntity<?> getAllRentalsByCustomerId (@PathVariable Long customerId){
+        try{
+            List<RentalDTO> rentalDTO = rentalService.getAllRentalsByCustomerId(customerId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(rentalDTO);
         }catch (Exception e){
             log.error("Error in addRental {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

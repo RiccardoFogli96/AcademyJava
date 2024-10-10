@@ -1,6 +1,7 @@
 package com.library.course.service;
 
 
+import com.library.course.entity.Rental;
 import com.library.course.mapper.RentalMapper;
 import com.library.course.model.BookDTO;
 import com.library.course.model.CreateRentalDTO;
@@ -9,6 +10,8 @@ import com.library.course.model.RentalDTO;
 import com.library.course.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -31,4 +34,9 @@ public class RentalService {
         return rental;
     }
 
+    public List<RentalDTO> getAllRentalsByCustomerId(Long customerId) throws Exception {
+        customerService.getCustomerByID(customerId);
+        List<Rental> rentals = rentalRepository.findByCustomer_Id(customerId);
+        return rentals.stream().map(rentalMapper::toDTO).toList();
+    }
 }

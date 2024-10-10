@@ -15,6 +15,7 @@ public class Rental {
 
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	@Column(name = "rent_id")
 	private Long rentId;
 
 	@Column(name = "start_date", nullable = false)

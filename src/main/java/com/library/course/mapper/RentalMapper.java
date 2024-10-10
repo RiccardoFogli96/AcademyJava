@@ -23,4 +23,15 @@ public class RentalMapper {
                 .endDate(rentalDTO.getEndDate())
                 .build();
     }
+
+    public RentalDTO toDTO(Rental rental) {
+        return RentalDTO
+                .builder()
+                .id(rental.getRentId())
+                .customer(customerMapper.toCustomerDTO(rental.getCustomer()))
+                .book(bookMapper.fromBookToDTO(rental.getBook()))
+                .startDate(rental.getStartDate())
+                .endDate(rental.getEndDate())
+                .build();
+    }
 }
