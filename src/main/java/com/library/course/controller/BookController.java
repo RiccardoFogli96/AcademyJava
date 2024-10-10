@@ -52,7 +52,7 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getBookById(@PathVariable("id") Long id){
         try{
-            BookDTO bookFound = bookService.getBookById(id);
+            BookDTO bookFound = bookService.getBookDTOById(id);
             logger.info("Book with Id {} found", id);
             return ResponseEntity.status(HttpStatus.FOUND).body(bookFound);
         } catch (Exception e) {

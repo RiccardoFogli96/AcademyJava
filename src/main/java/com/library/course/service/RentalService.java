@@ -1,6 +1,8 @@
 package com.library.course.service;
 
 
+import com.library.course.entity.Book;
+import com.library.course.entity.Customer;
 import com.library.course.entity.Rental;
 import com.library.course.mapper.RentalMapper;
 import com.library.course.model.BookDTO;
@@ -27,11 +29,11 @@ public class RentalService {
         if (createRentalDTO == null) {
             throw new Exception("CreateRentalDTO is null");
         }
-        CustomerDTO customerDTO = customerService.getCustomerByID(customerId);
-        BookDTO bookDTO = bookService.getBookById(bookId);
-        RentalDTO rental = new RentalDTO(createRentalDTO.getStartDate(), createRentalDTO.getEndDate(), customerDTO, bookDTO);
-        rentalRepository.save(rentalMapper.toRental(rental));
-        return rental;
+        Customer customer = customerService.getCustomerByID(customerId);
+        Book book = bookService.getBookById(bookId);
+        Rental rental = new Rental(createRentalDTO.getStartDate(), createRentalDTO.getEndDate(), customer, book);
+        rentalRepository.save(rental);
+        return rentalMapper.toDTO(rental);
     }
 
     public List<RentalDTO> getAllRentalsByCustomerId(Long customerId) throws Exception {

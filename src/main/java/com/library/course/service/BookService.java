@@ -35,10 +35,13 @@ public class BookService {
         return bookMapper.fromBookToDTO(newBook);
     }
 
-    public BookDTO getBookById (Long id) throws Exception{
+    public BookDTO getBookDTOById(Long id) throws Exception{
         Book book = bookRepository.findById(id).orElseThrow(()-> new Exception("Book not found"));
-
         return bookMapper.fromBookToDTO(book);
+    }
+
+    public Book getBookById (Long id) throws Exception{
+       return bookRepository.findById(id).orElseThrow(()-> new Exception("Book not found"));
     }
 
     public List<BookDTO> getBookByTipology ( Tipologia tipologia) {

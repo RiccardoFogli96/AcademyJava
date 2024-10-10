@@ -33,10 +33,10 @@ public class CustomerController {
     @GetMapping("/{customerId}")
     public ResponseEntity<?> getCustomerByID(@PathVariable("customerId") Long id) {
         try {
-            CustomerDTO customerDTO = customerService.getCustomerByID(id);
+            CustomerDTO customerDTO = customerService.getCustomerDTOByID(id);
             return ResponseEntity.status(HttpStatus.CREATED).body(customerDTO);
         } catch (Exception e) {
-            log.error("Generic error in getCustomerByID {}", e.getMessage(), e);
+            log.error("Generic error in getCustomerDTOByID {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

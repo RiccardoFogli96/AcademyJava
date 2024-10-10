@@ -12,6 +12,7 @@ public class RentalMapper {
     private final BookMapper bookMapper;
     private final CustomerMapper customerMapper;
 
+    /*
     public Rental toRental(RentalDTO rentalDTO) {
 
         return Rental
@@ -23,6 +24,7 @@ public class RentalMapper {
                 .endDate(rentalDTO.getEndDate())
                 .build();
     }
+     */
 
     public RentalDTO toDTO(Rental rental) {
         return RentalDTO

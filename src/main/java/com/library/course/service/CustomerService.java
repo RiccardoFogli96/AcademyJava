@@ -34,11 +34,17 @@ public class CustomerService {
 				.toList();
 	}
 
-	public CustomerDTO getCustomerByID (Long id) throws Exception {
+	public CustomerDTO getCustomerDTOByID(Long id) throws Exception {
 		Customer found = customerRepository
 				.findById(id)
-				.orElseThrow(() -> new Exception ("Customer not found"));
+				.orElseThrow(() -> new Exception ("Customer with id: " + id + " not found."));
 		return customerMapper.toCustomerDTO(found);
+	}
+
+	public Customer getCustomerByID(Long id) throws Exception {
+        return customerRepository
+				.findById(id)
+				.orElseThrow(() -> new Exception ("Customer with id: " + id + " not found."));
 	}
 
 }

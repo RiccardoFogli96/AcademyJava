@@ -30,4 +30,11 @@ public class Rental {
 	@ManyToOne
 	@JoinColumn(name = "book_id")
 	private Book book;
+
+	public Rental(LocalDateTime startDate, LocalDateTime endDate, Customer customer, Book book) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.customer = customer;
+		this.book = book;
+	}
 }

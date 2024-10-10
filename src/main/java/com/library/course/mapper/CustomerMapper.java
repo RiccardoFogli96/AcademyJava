@@ -22,7 +22,6 @@ public class CustomerMapper {
 				.email(customer.getEmail())
 				.id(customer.getId())
 				.firstName(customer.getFirstName())
-				.rentals(customer.getRentals())
 				.lastName(customer.getLastName())
 				.build();
 	}
@@ -33,7 +32,6 @@ public class CustomerMapper {
 				.email(customerDTO.getEmail())
 				.id(customerDTO.getId())
 				.firstName(customerDTO.getFirstName())
-				.rentals(customerDTO.getRentals())
 				.lastName(customerDTO.getLastName())
 				.build();
 	}
