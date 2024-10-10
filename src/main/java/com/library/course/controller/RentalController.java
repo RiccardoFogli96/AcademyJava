@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -41,5 +42,18 @@ public class RentalController {
             log.error("Error in addRental {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<?> getAllRentals(@RequestParam int page, @RequestParam int quantity){
+        return ResponseEntity.status(HttpStatus.FOUND).body(rentalService.getAllRentalsPaginated(page,quantity));
+    }
+
+    /*
+    tutti i rental che hanno il nome di un libro
+     */
+    @GetMapping("/filtered/")
+    public ResponseEntity<?> getAllRentalsFiltered(@RequestParam int page, @RequestParam int quantity, @RequestParam String titolo){
+        return ResponseEntity.status(HttpStatus.FOUND).body(rentalService.getAllRentalsPaginated(page,quantity,titolo));
     }
 }

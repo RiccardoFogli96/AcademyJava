@@ -5,12 +5,14 @@ import com.library.course.entity.Book;
 import com.library.course.entity.Customer;
 import com.library.course.entity.Rental;
 import com.library.course.mapper.RentalMapper;
-import com.library.course.model.BookDTO;
 import com.library.course.model.CreateRentalDTO;
-import com.library.course.model.CustomerDTO;
 import com.library.course.model.RentalDTO;
 import com.library.course.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,4 +43,19 @@ public class RentalService {
         List<Rental> rentals = rentalRepository.findByCustomer_Id(customerId);
         return rentals.stream().map(rentalMapper::toDTO).toList();
     }
+
+    public Page<RentalDTO> getAllRentalsPaginated(int page, int quantity) {
+        Pageable pageable = PageRequest.of(page, quantity).withSort(Sort.by("book.titolo"));
+        Page<Rental> rental = rentalRepository.findAll(pageable);
+
+        return rental.map(rentalMapper::toDTO);
+    }
+
+    public Page<RentalDTO> getAllRentalsPaginated(int page, int quantity, String titolo) {
+        Pageable pageable = PageRequest.of(page, quantity).withSort(Sort.by("book.titolo"));
+        Page<Rental> rental = rentalRepository.findRentalsFilteredFalse(titolo,pageable);
+        return rental.map(rentalMapper::toDTO);
+    }
+
+
 }
