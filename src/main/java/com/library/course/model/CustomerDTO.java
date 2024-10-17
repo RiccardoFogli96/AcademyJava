@@ -1,14 +1,11 @@
 package com.library.course.model;
 
-import com.library.course.entity.Rental;
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
-@Builder
+@SuperBuilder
 @Data
-public class CustomerDTO {
+public class CustomerDTO{
 
 	private Long id;
 	private String firstName;

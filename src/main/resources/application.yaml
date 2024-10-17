@@ -4,14 +4,20 @@ spring:
   jpa:
     hibernate:
       dialect: jakarta.persistence.jdbc.url
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/mydatabase
     username: root
-    password: admin123
+    password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
 logging:
   level:
     root: INFO
     com.donato.esercizio.esercizio26092024.service.BookService: INFO
+    
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html

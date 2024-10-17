@@ -19,6 +19,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+
     @PostMapping("")
     public ResponseEntity<?> addNewCustomer(@RequestBody @Valid CreateCustomerDTO createCustomerDTO) {
         try {
@@ -31,14 +32,11 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<?> getCustomerByID(@PathVariable("customerId") Long id) {
-        try {
+    public ResponseEntity<CustomerDTO> getCustomerByID(@PathVariable("customerId") Long id) throws Exception{
+
             CustomerDTO customerDTO = customerService.getCustomerDTOByID(id);
             return ResponseEntity.status(HttpStatus.CREATED).body(customerDTO);
-        } catch (Exception e) {
-            log.error("Generic error in getCustomerDTOByID {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+
     }
 
     @GetMapping()

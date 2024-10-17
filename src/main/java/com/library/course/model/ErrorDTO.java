@@ -8,15 +8,9 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
-public class AuthorDTO extends CreateAuthorDTO{
-
-    private Long id;
-
-
-    public AuthorDTO(String name, String surname, String biography) {
-        super(name,surname,biography);
-    }
+public class ErrorDTO {
+	private String errorMessage;
 }

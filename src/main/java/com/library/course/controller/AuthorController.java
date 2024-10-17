@@ -3,6 +3,7 @@ package com.library.course.controller;
 import com.library.course.model.AuthorDTO;
 import com.library.course.model.CreateAuthorDTO;
 import com.library.course.service.AuthorService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ public class AuthorController {
 
     //private Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
+    @Operation( summary = "GetAllAuthors" )
     @GetMapping("/all-authors")
     public ResponseEntity<List<AuthorDTO>>  getAllAuthors(){
         List<AuthorDTO> authorDTOList = authorService.getAllAuthors();
@@ -36,6 +38,7 @@ public class AuthorController {
             return ResponseEntity.status(HttpStatus.FOUND).body(authorDTO);
         }catch (Exception e){
             log.error("Error in getting Author by Id: {}", e.getMessage(), e);
+
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
