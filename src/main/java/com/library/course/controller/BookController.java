@@ -4,7 +4,7 @@ package com.library.course.controller;
 import com.library.course.model.CreateBookDTO;
 import com.library.course.model.BookDTO;
 import com.library.course.model.ModifyBookDTO;
-import com.library.course.model.Tipologia;
+import com.library.course.model.GenreBook;
 import com.library.course.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -62,9 +62,9 @@ public class BookController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<BookDTO>> getBookByTipology(@RequestParam("tipologia") Tipologia tipologia){
-        List <BookDTO> bookDTOS = bookService.getBookByTipology(tipologia);
-        logger.info("Books with tipology {} found", tipologia);
+    public ResponseEntity<List<BookDTO>> getBookByTipology(@RequestParam("tipologia") GenreBook genreBook){
+        List <BookDTO> bookDTOS = bookService.getBookByTipology(genreBook);
+        logger.info("Books with tipology {} found", genreBook);
         return  ResponseEntity.status(HttpStatus.FOUND).body(bookDTOS);
     }
 

@@ -18,7 +18,7 @@ public class BookMapper {
         return Book.builder()
                 .titolo(createBookDTO.getTitolo())
                 .descrizione(createBookDTO.getDescrizione())
-                .tipologia(createBookDTO.getTipologia())
+                .genreBook(createBookDTO.getGenreBook())
                 .author(author)
                 .build();
     }
@@ -29,7 +29,7 @@ public class BookMapper {
         return BookDTO.builder()
                 .id(book.getId())
                 .titolo(book.getTitolo())
-                .tipologia(book.getTipologia())
+                .genreBook(book.getGenreBook())
                 .authorId(author.getId())
                 .descrizione(book.getDescrizione())
                 .build();
@@ -40,7 +40,7 @@ public class BookMapper {
                 .builder()
                 .titolo(bookDTO.getTitolo())
                 .descrizione(bookDTO.getDescrizione())
-                .tipologia(bookDTO.getTipologia())
+                .genreBook(bookDTO.getGenreBook())
                 .author(authorRepository.findById(bookDTO.getAuthorId()).get())
                 .build();
     }
