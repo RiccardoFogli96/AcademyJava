@@ -1,5 +1,6 @@
 package com.library.course.entity;
 
+import com.library.course.model.CustomerStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,10 @@ public class Customer {
 	private String firstName;
 	private String lastName;
 	private String email;
+
+	@Enumerated(EnumType.STRING)
+	@Builder.Default
+	private CustomerStatus status = CustomerStatus.ENABLED;
 
 	@OneToMany(mappedBy = "customer")
 	private List<Rental> rentals;

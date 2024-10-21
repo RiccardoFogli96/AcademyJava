@@ -6,8 +6,10 @@ import com.library.course.entity.Customer;
 import com.library.course.entity.Rental;
 import com.library.course.mapper.RentalMapper;
 import com.library.course.model.CreateRentalDTO;
+import com.library.course.model.CustomerDTO;
 import com.library.course.model.RentalDTO;
 import com.library.course.repository.RentalRepository;
+import com.library.course.utils.CheckCustomerStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,7 @@ public class RentalService {
     private final BookService bookService;
     private final RentalRepository rentalRepository;
     private final RentalMapper rentalMapper;
+    private final CheckCustomerStatus checkCustomerStatus;
 
     public RentalDTO createRentalDTO(Long customerId, Long bookId, CreateRentalDTO createRentalDTO) throws Exception {
         if (createRentalDTO == null) {
@@ -39,7 +42,7 @@ public class RentalService {
     }
 
     public List<RentalDTO> getAllRentalsByCustomerId(Long customerId) throws Exception {
-        customerService.getCustomerByID(customerId);
+        checkCustomerStatus.isCustomerEnabled(customerId);
         List<Rental> rentals = rentalRepository.findByCustomer_Id(customerId);
         return rentals.stream().map(rentalMapper::toDTO).toList();
     }

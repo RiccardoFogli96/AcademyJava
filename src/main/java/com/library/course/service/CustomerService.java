@@ -4,6 +4,7 @@ import com.library.course.entity.Customer;
 import com.library.course.mapper.CustomerMapper;
 import com.library.course.model.CreateCustomerDTO;
 import com.library.course.model.CustomerDTO;
+import com.library.course.model.CustomerStatus;
 import com.library.course.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,15 @@ public class CustomerService {
         return customerRepository
 				.findById(id)
 				.orElseThrow(() -> new Exception ("Customer with id: " + id + " not found."));
+	}
+
+	public CustomerDTO changeCustomerStatus(Long id, CustomerStatus customerStatus) throws Exception{
+		Customer foundCustomer = customerRepository
+				.findById(id)
+				.orElseThrow(() -> new Exception("Customer iwth id: " + id + " not found."));
+		foundCustomer.setStatus(customerStatus);
+		customerRepository.save(foundCustomer);
+		return customerMapper.toCustomerDTO(foundCustomer);
 	}
 
 }

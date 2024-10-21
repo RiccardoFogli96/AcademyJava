@@ -50,4 +50,10 @@ public class CustomerController {
         }
     }
 
+    @PatchMapping("/status/{customerId}")
+    public ResponseEntity<CustomerDTO> changeCustomerStatus(@PathVariable("customerId") Long id, @RequestParam CustomerStatus customerStatus) throws Exception{
+        CustomerDTO customerDTO = customerService.changeCustomerStatus(id,customerStatus);
+        return ResponseEntity.status(HttpStatus.OK).body(customerDTO);
+    }
+
 }

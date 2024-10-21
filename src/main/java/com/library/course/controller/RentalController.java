@@ -2,8 +2,10 @@ package com.library.course.controller;
 
 
 import com.library.course.model.CreateRentalDTO;
+import com.library.course.model.CustomerDTO;
 import com.library.course.model.RentalDTO;
 import com.library.course.service.RentalService;
+import com.library.course.utils.CheckCustomerStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ public class RentalController {
 
     private final RentalService rentalService;
 
+
     @PostMapping("/customers/{customerId}/books/{bookId}")
     public ResponseEntity<?> addRental (@PathVariable Long customerId, @PathVariable Long bookId, @RequestBody CreateRentalDTO createRentalDTO){
         try{
@@ -34,14 +37,11 @@ public class RentalController {
     }
 
     @GetMapping("/customers/{customerId}")
-    public ResponseEntity<?> getAllRentalsByCustomerId (@PathVariable Long customerId){
-        try{
+    public ResponseEntity<?> getAllRentalsByCustomerId (@PathVariable Long customerId)throws Exception{
+
             List<RentalDTO> rentalDTO = rentalService.getAllRentalsByCustomerId(customerId);
+           // log.error("Error in addRental {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.CREATED).body(rentalDTO);
-        }catch (Exception e){
-            log.error("Error in addRental {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
 
     @GetMapping("/")
