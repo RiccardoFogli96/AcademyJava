@@ -14,7 +14,6 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/author")
 public class AuthorController {
 
     @Autowired
@@ -23,14 +22,14 @@ public class AuthorController {
     //private Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
     @Operation( summary = "GetAllAuthors" )
-    @GetMapping("/all-authors")
+    @GetMapping("/author/all-authors")
     public ResponseEntity<List<AuthorDTO>>  getAllAuthors(){
         List<AuthorDTO> authorDTOList = authorService.getAllAuthors();
         log.debug("Get all Authors");
         return ResponseEntity.status(HttpStatus.FOUND).body(authorDTOList);
     }
 
-    @GetMapping("/{authorId}")
+    @GetMapping("/public/author/{authorId}")
     public ResponseEntity<?> getAuthorById(@PathVariable("authorId") Long id){
         try {
             AuthorDTO authorDTO = authorService.getAuthorById(id);
@@ -43,7 +42,7 @@ public class AuthorController {
         }
     }
 
-    @PostMapping()
+    @PostMapping("/author")
     public ResponseEntity<?> addNewAuthor(@RequestBody CreateAuthorDTO authorDTO){
         try{
             AuthorDTO newAuthor = authorService.addNewAuthor(authorDTO);
@@ -55,14 +54,14 @@ public class AuthorController {
         }
     }
 
-    @DeleteMapping("/{authorId}")
+    @DeleteMapping("/author/{authorId}")
     public ResponseEntity deleteAuthor(@PathVariable ("authorId") Long id){
         authorService.deleteAuthor(id);
         log.debug("Author with Id {} deleted", id);
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping("/{authorID}")
+    @PutMapping("/author/{authorID}")
     public ResponseEntity<?> updateAuthor(@PathVariable ("authorID") Long id, @RequestBody AuthorDTO createAuthorDTO){
         try{
             return ResponseEntity.ok(authorService.updateAuthor(createAuthorDTO, id));
