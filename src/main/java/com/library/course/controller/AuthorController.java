@@ -19,14 +19,12 @@ public class AuthorController {
     @Autowired
     AuthorService authorService;
 
-    //private Logger logger = LoggerFactory.getLogger(AuthorController.class);
-
     @Operation( summary = "GetAllAuthors" )
     @GetMapping("/private/author/all-authors")
     public ResponseEntity<List<AuthorDTO>>  getAllAuthors(){
         List<AuthorDTO> authorDTOList = authorService.getAllAuthors();
         log.debug("Get all Authors");
-        return ResponseEntity.status(HttpStatus.FOUND).body(authorDTOList);
+        return ResponseEntity.status(HttpStatus.OK).body(authorDTOList);
     }
 
     @GetMapping("/public/author/{authorId}")
@@ -34,7 +32,7 @@ public class AuthorController {
         try {
             AuthorDTO authorDTO = authorService.getAuthorById(id);
             log.debug("Author with id: {} found", id);
-            return ResponseEntity.status(HttpStatus.FOUND).body(authorDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(authorDTO);
         }catch (Exception e){
             log.error("Error in getting Author by Id: {}", e.getMessage(), e);
 
