@@ -5,6 +5,7 @@ import com.library.course.model.LoginDTO;
 import com.library.course.repository.CustomerRepository;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.KeyPair;
@@ -18,13 +19,12 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
-public class AuthControllerService {
+public class AuthService {
 
     private final CustomerRepository customerRepository;
-    private final KeyPairGenerator keyPairGen;
+    private final JwtService jwtService;
 
-    private PrivateKey privateKey;
-    private PublicKey publicKey;
+
 
     public String loginUser (LoginDTO loginDTO) throws Exception{
 
@@ -34,16 +34,8 @@ public class AuthControllerService {
             throw new Exception("Customer not found");
         }
 
-        return Jwts.builder().subject(getCumstomer.getEmail()).claim("fistname", getCumstomer.getFirstName())
-                .issuedAt(new Date())
-                .expiration(Date.from(LocalDateTime.now().plus(10, TimeUnit.MINUTES.toChronoUnit()).toInstant(ZoneOffset.UTC)))
-                .signWith(privateKey).compact();
+        return jwtService.createToken(getCumstomer.getEmail(), getCumstomer.getFirstName());
     }
 
-    public void generateKeyPair(){
-        keyPairGen.initialize(521); // Lunghezza per ES512
-        KeyPair keyPair = keyPairGen.generateKeyPair();
-        privateKey = keyPair.getPrivate();
-        publicKey = keyPair.getPublic();
-    }
+
 }

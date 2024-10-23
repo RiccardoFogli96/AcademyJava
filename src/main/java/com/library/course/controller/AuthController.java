@@ -1,6 +1,7 @@
 package com.library.course.controller;
 
 import com.library.course.model.LoginDTO;
+import com.library.course.service.AuthService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
+    private final AuthService authService;
 
     @PostMapping("/public/login")
-    public ResponseEntity<?> loginUser (@RequestBody() LoginDTO loginDTO){
-
+    public ResponseEntity<?> loginUser (@RequestBody() LoginDTO loginDTO) throws Exception{
+    return ResponseEntity.ok(authService.loginUser(loginDTO));
     }
 
 

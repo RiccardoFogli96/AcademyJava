@@ -22,7 +22,7 @@ public class AuthorController {
     //private Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
     @Operation( summary = "GetAllAuthors" )
-    @GetMapping("/author/all-authors")
+    @GetMapping("/private/author/all-authors")
     public ResponseEntity<List<AuthorDTO>>  getAllAuthors(){
         List<AuthorDTO> authorDTOList = authorService.getAllAuthors();
         log.debug("Get all Authors");
