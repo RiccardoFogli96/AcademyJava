@@ -13,14 +13,13 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/customer")
 @RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
 
 
-    @PostMapping("")
+    @PostMapping("/public/customer")
     public ResponseEntity<?> addNewCustomer(@RequestBody @Valid CreateCustomerDTO createCustomerDTO) {
         try {
             CustomerDTO customerDTO = customerService.addNewCustomer(createCustomerDTO);
@@ -31,7 +30,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/public/customer/{customerId}")
     public ResponseEntity<CustomerDTO> getCustomerByID(@PathVariable("customerId") Long id) throws Exception{
 
             CustomerDTO customerDTO = customerService.getCustomerDTOByID(id);

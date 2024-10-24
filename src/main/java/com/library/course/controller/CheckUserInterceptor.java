@@ -19,7 +19,7 @@ public class CheckUserInterceptor implements HandlerInterceptor {
 
 	private final JwtService jwtService;
 
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws SecurityException {
 		String authHeader = request.getHeader("Authorization");
 		String token;
 		if(authHeader != null){
@@ -30,7 +30,7 @@ public class CheckUserInterceptor implements HandlerInterceptor {
 			//Todo: validate token
 			return true;
 		} else {
-		 throw new Exception("Not authorized");
+		 throw new SecurityException("Not authorized");
 		}
 
 

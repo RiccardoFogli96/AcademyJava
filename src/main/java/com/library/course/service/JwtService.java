@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,29 +20,28 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class JwtService {
 
-    //private final KeyPairGenerator keyPairGen;
-    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    @Autowired
+    private KeyPair keyPair;
 
 
     @Value("${extra.jwt.expiration.minutes}")
     private Integer minutes;
 
-    public String createToken(String email, String firstName){
-        return Jwts.builder().setSubject(email)
+    public String createToken(String email, String firstName) throws NoSuchAlgorithmException{
+        return Jwts.builder().subject(email)
                 .claim("fistname", firstName)
-                .setIssuedAt(new Date())
-                .setExpiration(Date.from(LocalDateTime.now().plus(minutes, TimeUnit.MINUTES.toChronoUnit()).toInstant(ZoneOffset.UTC)))
-                .signWith(SignatureAlgorithm.HS512, key).compact();
+                .issuedAt(new Date())
+                .expiration(Date.from(LocalDateTime.now().plus(minutes, TimeUnit.MINUTES.toChronoUnit()).toInstant(ZoneOffset.UTC)))
+                .signWith(keyPair.getPrivate()).compact();
     }
 
-    /*public void generateKeyPair(){
-        keyPairGen.initialize(521); // Lunghezza per ES512
-        KeyPair keyPair = keyPairGen.generateKeyPair();
-        privateKey = keyPair.getPrivate();
-        publicKey = keyPair.getPublic();
-    }*/
+
 
     public Claims validateToken(String token){
-        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+        return Jwts.parser()
+                .verifyWith(keyPair.getPublic())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }
