@@ -1,5 +1,6 @@
 package com.library.course.controller;
 
+import com.library.course.repository.CustomerRepository;
 import com.library.course.service.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,12 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.Date;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class CheckUserInterceptor implements HandlerInterceptor {
 
-
+	private final CustomerRepository customerRepository;
 	private final JwtService jwtService;
 
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws SecurityException {
@@ -25,15 +28,11 @@ public class CheckUserInterceptor implements HandlerInterceptor {
 		if(authHeader != null){
 			token = authHeader.substring(7);
 			Claims claims = jwtService.validateToken(token);
-			log.info("Token: " + claims.getSubject());
-
-			//Todo: validate token
-			return true;
-		} else {
-		 throw new SecurityException("Not authorized");
+			Date expiration = claims.getExpiration();
+			if(customerRepository.findByEmail(claims.getSubject()) != null && expiration.after(new Date())){
+				return true;
+			}
 		}
-
-
+		throw new SecurityException("Not authorized");
    }
-
 }

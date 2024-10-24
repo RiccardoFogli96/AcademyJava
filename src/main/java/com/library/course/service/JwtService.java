@@ -35,8 +35,6 @@ public class JwtService {
                 .signWith(keyPair.getPrivate()).compact();
     }
 
-
-
     public Claims validateToken(String token){
         return Jwts.parser()
                 .verifyWith(keyPair.getPublic())
@@ -44,4 +42,5 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
+
 }
