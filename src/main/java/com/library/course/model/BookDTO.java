@@ -16,8 +16,8 @@ public class BookDTO extends CreateBookDTO{
 
     private Long id;
 
-    public BookDTO(@NotNull String titolo, String descrizione, @NotNull Tipologia tipologia, Long authorId, Long id) {
-        super(titolo, descrizione, tipologia, authorId);
+    public BookDTO(@NotNull String titolo, String descrizione, @NotNull GenreBook genreBook, Long authorId, Long id) {
+        super(titolo, descrizione, genreBook, authorId);
         this.id = id;
     }
 }

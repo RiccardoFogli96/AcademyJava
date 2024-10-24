@@ -1,6 +1,6 @@
 package com.library.course.model;
 
-public enum Tipologia {
+public enum GenreBook {
 	AZIONE,
 	GIALLO,
 	FANTASIA;

@@ -44,9 +44,9 @@ public class BookService {
        return bookRepository.findById(id).orElseThrow(()-> new Exception("Book not found"));
     }
 
-    public List<BookDTO> getBookByTipology ( Tipologia tipologia) {
-        List<Book> book = bookRepository.findByTipologia(tipologia);
-        return book.stream().map(b -> new BookDTO(b.getTitolo(), b.getDescrizione(), b.getTipologia(), b.getAuthor().getId(), b.getId())).toList();
+    public List<BookDTO> getBookByTipology ( GenreBook genreBook) {
+        List<Book> book = bookRepository.findByTipologia(genreBook);
+        return book.stream().map(b -> new BookDTO(b.getTitolo(), b.getDescrizione(), b.getGenreBook(), b.getAuthor().getId(), b.getId())).toList();
     }
 
     public BookDTO addBookWithAuthor( CreateBookDTO createBookDTO, Long id) throws Exception {
@@ -63,7 +63,7 @@ public class BookService {
             newBookResponseDTO.setId(i.getId());
             newBookResponseDTO.setTitolo(i.getTitolo());
             newBookResponseDTO.setDescrizione(i.getDescrizione());
-            newBookResponseDTO.setTipologia(i.getTipologia());
+            newBookResponseDTO.setGenreBook(i.getGenreBook());
             newBookResponseDTO.setAuthorId(i.getAuthor().getId());
             listBookDTOAuthor.add(newBookResponseDTO);
         }
