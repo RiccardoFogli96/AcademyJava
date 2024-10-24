@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -30,6 +28,7 @@ public class CheckUserInterceptor implements HandlerInterceptor {
 			Claims claims = jwtService.validateToken(token);
 			Date expiration = claims.getExpiration();
 			if(customerRepository.findByEmail(claims.getSubject()) != null && expiration.after(new Date())){
+				request.setAttribute("email", claims.getSubject());
 				return true;
 			}
 		}

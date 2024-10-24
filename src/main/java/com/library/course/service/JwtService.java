@@ -2,16 +2,12 @@ package com.library.course.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.security.*;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -29,10 +25,11 @@ public class JwtService {
 
     public String createToken(String email, String firstName) throws NoSuchAlgorithmException{
         return Jwts.builder().subject(email)
-                .claim("fistname", firstName)
+                .claim("firstname", firstName)
                 .issuedAt(new Date())
                 .expiration(Date.from(LocalDateTime.now().plus(minutes, TimeUnit.MINUTES.toChronoUnit()).toInstant(ZoneOffset.UTC)))
-                .signWith(keyPair.getPrivate()).compact();
+                .signWith(keyPair.getPrivate())
+                .compact();
     }
 
     public Claims validateToken(String token){
@@ -42,5 +39,4 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
-
 }

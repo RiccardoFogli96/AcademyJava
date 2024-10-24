@@ -26,7 +26,7 @@ public class BookService {
 
     public BookDTO addBook(CreateBookDTO createBookDTO) throws Exception {
 
-        AuthorDTO authorDTO = authorService.getAuthorById(createBookDTO.getAuthorId());
+        AuthorDTO authorDTO = authorService.getAuthorDTOById(createBookDTO.getAuthorId());
         Author author = authorMapper.fromDTOtoAuthor(authorDTO);
 
         Book newBook = bookMapper.fromDTOToBook(createBookDTO, author);
@@ -50,7 +50,7 @@ public class BookService {
     }
 
     public BookDTO addBookWithAuthor( CreateBookDTO createBookDTO, Long id) throws Exception {
-        authorService.getAuthorById(id);
+        authorService.getAuthorDTOById(id);
         createBookDTO.setAuthorId(id);
         return addBook(createBookDTO);
     }

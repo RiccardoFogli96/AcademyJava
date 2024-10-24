@@ -5,40 +5,37 @@ import com.library.course.entity.Magazine;
 import com.library.course.mapper.AuthorMapper;
 import com.library.course.mapper.MagazineMapper;
 import com.library.course.model.CreateMagazineDTO;
+import com.library.course.model.MagazineDTO;
 import com.library.course.repository.MagazineRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class MagazineService {
-    @Autowired
-    MagazineRepository magazineRepository;
-    @Autowired
-    MagazineMapper magazineMapper;
-    @Autowired
-    AuthorService authorService;
-    @Autowired
-    AuthorMapper authorMapper;
 
-    public CreateMagazineDTO addMagazine(CreateMagazineDTO createMagazineDTO) {
+    private final MagazineRepository magazineRepository;
+    private final MagazineMapper magazineMapper;
+    private final AuthorService authorService;
+    private final AuthorMapper authorMapper;
+
+    public MagazineDTO addMagazine( CreateMagazineDTO createMagazineDTO) {
         Magazine magazine = magazineMapper.createMagazineDTOToMagazine(createMagazineDTO);
         return magazineMapper.magazineToCreateMagazineDTO(magazineRepository.save(magazine));
     }
 
     public List<Author> getListAuthor(CreateMagazineDTO createMagazineDTO) {
         List<Long> authorIdList = createMagazineDTO.getAuthorIdList();
-        List<Author> authorList = new ArrayList<>();
-        authorIdList.forEach(a -> {
-            try {
-                authorList.add(authorMapper.fromDTOtoAuthor(authorService.getAuthorById(a)));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        return authorList;
+        List<Author> authors = authorService.findAllById(authorIdList);
+        if(authors.size() != authorIdList.size()){
+            log.warn("Some authors could not be found {}", authorIdList);
+        }
+        return authors;
     }
 
     public List<Long> getListAuthorId(Magazine magazine){

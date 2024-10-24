@@ -2,26 +2,38 @@ package com.library.course.mapper;
 
 import com.library.course.entity.Author;
 import com.library.course.entity.Magazine;
+import com.library.course.model.AuthorDTO;
 import com.library.course.model.CreateMagazineDTO;
+import com.library.course.model.MagazineDTO;
 import com.library.course.service.MagazineService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-
+@RequiredArgsConstructor
 public class MagazineMapper {
-    @Autowired
-    MagazineService magazineService;
 
-    public Magazine createMagazineDTOToMagazine(CreateMagazineDTO createMagazineDTO){
-        List<Author> authorList = magazineService.getListAuthor(createMagazineDTO);
+   private final MagazineService magazineService;
 
-        return Magazine.builder().numberMagazine(createMagazineDTO.getNumberMagazine()).tipologyMagazine(createMagazineDTO.getTipologyMagazine()).publishedDate(createMagazineDTO.getPublishedDate()).title(createMagazineDTO.getTitle()).authorList(authorList).build();
+    public Magazine createMagazineDTOToMagazine( CreateMagazineDTO createMagazineDTO, List<Author> authors ){
+        return Magazine
+                .builder()
+                .numberMagazine(createMagazineDTO.getNumberMagazine())
+                .tipologyMagazine(createMagazineDTO.getTipologyMagazine())
+                .publishedDate(createMagazineDTO.getPublishedDate())
+                .title(createMagazineDTO.getTitle())
+                .authorList(authors).build();
     }
 
-    public CreateMagazineDTO magazineToCreateMagazineDTO(Magazine magazine){
-        List<Long> authorIdList = magazineService.getListAuthorId(magazine);
+    public MagazineDTO toMagazineDTO( Magazine magazine, List< AuthorDTO > authorDTOS ){
 
-        return CreateMagazineDTO.builder().numberMagazine(magazine.getNumberMagazine()).tipologyMagazine(magazine.getTipologyMagazine()).publishedDate(magazine.getPublishedDate()).title(magazine.getTitle()).authorIdList(authorIdList).build();
+        return MagazineDTO
+                .builder()
+                .numberMagazine(magazine.getNumberMagazine())
+                .tipologyMagazine(magazine.getTipologyMagazine())
+                .publishedDate(magazine.getPublishedDate())
+                .title(magazine.getTitle())
+                .authorList(authorDTOS)
+		        .build();
     }
 
 }

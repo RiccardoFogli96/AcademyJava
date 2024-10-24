@@ -4,12 +4,12 @@ spring:
   jpa:
     hibernate:
       dialect: jakarta.persistence.jdbc.url
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/mydatabase
     username: root
-    password: admin123
+    password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
 extra:
   jwt:
