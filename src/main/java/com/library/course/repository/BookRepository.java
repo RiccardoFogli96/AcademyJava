@@ -11,4 +11,5 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 	List<Book> findByAuthorId(Long authorId);
 	Book findByAuthorIdAndId(Long authorId, Long bookId);
 	void deleteByAuthorId(Long authorId);
+	boolean existsByAuthor_IdAndTitolo(Long authorId, String title);
 }
