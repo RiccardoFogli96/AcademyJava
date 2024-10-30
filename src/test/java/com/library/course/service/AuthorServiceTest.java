@@ -31,8 +31,6 @@ class AuthorServiceTest {
 	private AuthorMapper authorMapper;
 	@Mock
 	private BookRepository bookRepository;
-	@Mock
-	private JwtService jwtService;
 
 	@InjectMocks
 	private AuthorService authorService;
