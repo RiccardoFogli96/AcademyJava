@@ -25,8 +25,9 @@ public class MagazineService {
     private final AuthorMapper authorMapper;
 
     public MagazineDTO addMagazine( CreateMagazineDTO createMagazineDTO) {
-        Magazine magazine = magazineMapper.createMagazineDTOToMagazine(createMagazineDTO);
-        return magazineMapper.magazineToCreateMagazineDTO(magazineRepository.save(magazine));
+       // Magazine magazine = magazineMapper.createMagazineDTOToMagazine(createMagazineDTO);
+       // return magazineMapper.magazineToCreateMagazineDTO(magazineRepository.save(magazine));
+        return null;
     }
 
     public List<Author> getListAuthor(CreateMagazineDTO createMagazineDTO) {

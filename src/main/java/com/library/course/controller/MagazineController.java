@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MagazineController {
     private final MagazineService magazineService;
-
+/*
     @PostMapping("")
     public ResponseEntity<?> addMagazine(@RequestBody CreateMagazineDTO createMagazineDTO){
         CreateMagazineDTO newMagazine = magazineService.addMagazine(createMagazineDTO);
         return  ResponseEntity.status(HttpStatus.CREATED).body(newMagazine);
     }
+
+ */
 }
