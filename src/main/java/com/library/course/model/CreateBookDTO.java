@@ -20,7 +20,7 @@ public class CreateBookDTO {
     private String titolo;
     private String descrizione;
     @NotNull
-    private Tipologia tipologia;
+    private GenreBook genreBook;
     @NotNull
     private Long authorId;
 

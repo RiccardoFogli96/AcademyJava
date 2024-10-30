@@ -1,6 +1,6 @@
 package com.library.course.entity;
 
-import com.library.course.model.Tipologia;
+import com.library.course.model.GenreBook;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +28,7 @@ public class Book {
     @Setter
     @Enumerated(EnumType.STRING)
     @Column(name="book_type")
-    private Tipologia tipologia;
+    private GenreBook genreBook;
 
     @ManyToOne
     @JoinColumn(name = "author_id")

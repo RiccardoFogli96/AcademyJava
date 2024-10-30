@@ -4,6 +4,7 @@ import com.library.course.model.AuthorDTO;
 import com.library.course.model.CreateAuthorDTO;
 import com.library.course.service.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,8 @@ public class AuthorController {
 
     @Operation( summary = "GetAllAuthors" )
     @GetMapping("/private/author/all-authors")
-    public ResponseEntity<List<AuthorDTO>>  getAllAuthors(){
+    public ResponseEntity<List<AuthorDTO>>  getAllAuthors( HttpServletRequest request ){
+        request.getAttribute("email");
         List<AuthorDTO> authorDTOList = authorService.getAllAuthors();
         log.debug("Get all Authors");
         return ResponseEntity.status(HttpStatus.OK).body(authorDTOList);
@@ -30,7 +32,7 @@ public class AuthorController {
     @GetMapping("/public/author/{authorId}")
     public ResponseEntity<?> getAuthorById(@PathVariable("authorId") Long id){
         try {
-            AuthorDTO authorDTO = authorService.getAuthorById(id);
+            AuthorDTO authorDTO = authorService.getAuthorDTOById(id);
             log.debug("Author with id: {} found", id);
             return ResponseEntity.status(HttpStatus.OK).body(authorDTO);
         }catch (Exception e){

@@ -22,6 +22,8 @@ public class Author {
     private String surname;
     @Column(name = "biography")
     private String biography;
+    @Column(name="magazine_id")
+    private Long magazineId;
 
     @OneToMany(mappedBy = "author")
     List<Book> bookList;
@@ -31,6 +33,7 @@ public class Author {
         this.surname = surname;
         this.biography = biography;
     }
+
 }
 /*
 Entità:

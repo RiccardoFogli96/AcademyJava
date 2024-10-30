@@ -18,13 +18,14 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
     private final BookRepository bookRepository;
+    private final JwtService jwtService;
 
 
     public List<AuthorDTO> getAllAuthors(){
         return authorMapper.fromAuthorListToDTOList(authorRepository.findAll());
     }
 
-    public AuthorDTO getAuthorById(Long id)throws Exception{
+    public AuthorDTO getAuthorDTOById( Long id)throws Exception{
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new Exception("Author with Id" + id + " not found"));
         return authorMapper.fromAuthorToDTO(author);
@@ -52,5 +53,9 @@ public class AuthorService {
         updateAuthor.setId(id);
         authorRepository.save(updateAuthor);
         return authorMapper.fromAuthorToDTO(updateAuthor);
+    }
+
+    public List<Author> findAllById(List<Long> ids){
+        return authorRepository.findAllByIdIn(ids);
     }
 }
