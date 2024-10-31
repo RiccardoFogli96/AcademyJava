@@ -48,7 +48,7 @@ public class BookService {
     }
 
     public List<BookDTO> getBookByTipology ( GenreBook genreBook) {
-        List<Book> book = bookRepository.findByTipologia(genreBook);
+        List<Book> book = bookRepository.findByGenreBook(genreBook);
         return book.stream().map(b -> new BookDTO(b.getTitolo(), b.getDescrizione(), b.getGenreBook(), b.getAuthor().getId(), b.getId())).toList();
     }
 
