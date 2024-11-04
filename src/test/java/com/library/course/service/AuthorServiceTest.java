@@ -9,6 +9,8 @@ import com.library.course.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -31,6 +33,9 @@ class AuthorServiceTest {
 	private AuthorMapper authorMapper;
 	@Mock
 	private BookRepository bookRepository;
+
+	@Captor
+	private ArgumentCaptor<Author> argumentCaptor;
 
 	@InjectMocks
 	private AuthorService authorService;
@@ -98,6 +103,23 @@ class AuthorServiceTest {
 		 verify(authorRepository, times(1) ).save(testAuthor);
 
 		 assertEquals("Mario", savedAuthor.getName());
+	}
+
+	@Test
+	void test_addAuthor_everythingOk_withCapture() throws Exception {
+
+		when(authorMapper.fromDTOtoAuthor(testCreateAuthor)).thenReturn(testAuthor);
+		when(authorMapper.fromAuthorToDTO(testAuthor)).thenReturn(testAuthorDTO);
+		when(authorRepository.save(testAuthor)).thenReturn(argumentCaptor.capture());
+
+		 authorService.addNewAuthor(testCreateAuthor);
+
+		 verify(authorRepository, times(1) ).save(argumentCaptor.capture());
+
+		 Author capturedAuthors = argumentCaptor.getValue();
+
+		 assertEquals("Mario", capturedAuthors.getName());
+		 assertNotNull(capturedAuthors.getId());
 	}
 
 	@Test
