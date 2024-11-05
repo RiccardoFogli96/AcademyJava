@@ -192,7 +192,7 @@ class BookServiceTest {
 
     @Test
     void getBookByTipology_WhenItsAllOk() {
-        when(bookRepository.findByTipologia(GenreBook.FANTASIA)).thenReturn(books);
+        when(bookRepository.findByGenreBook(GenreBook.FANTASIA)).thenReturn(books);
         List<BookDTO> fantasyBooks = bookService.getBookByTipology(GenreBook.FANTASIA);
         assertEquals(fantasyBooks.size(), 2);
     }
