@@ -5,14 +5,13 @@ import com.library.course.entity.Magazine;
 import com.library.course.model.AuthorDTO;
 import com.library.course.model.CreateMagazineDTO;
 import com.library.course.model.MagazineDTO;
-import com.library.course.service.MagazineService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 @RequiredArgsConstructor
+@Component
 public class MagazineMapper {
-
-   private final MagazineService magazineService;
 
     public Magazine createMagazineDTOToMagazine( CreateMagazineDTO createMagazineDTO, List<Author> authors ){
         return Magazine
