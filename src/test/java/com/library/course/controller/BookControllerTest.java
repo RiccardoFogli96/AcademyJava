@@ -6,13 +6,16 @@ import com.library.course.entity.Book;
 import com.library.course.model.BookDTO;
 import com.library.course.model.CreateBookDTO;
 import com.library.course.model.GenreBook;
+import com.library.course.model.ModifyBookDTO;
 import com.library.course.repository.AuthorRepository;
+import com.library.course.repository.BookRepository;
 import com.library.course.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest()
@@ -37,6 +41,9 @@ class BookControllerTest {
 
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
 
 
     private Author author;
@@ -89,7 +96,7 @@ class BookControllerTest {
         MvcResult mvcResult = mockMvc.perform(post("/book/author/" + author.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createBookDTO))
-                ).andReturn();
+        ).andReturn();
 
         BookDTO bookDTO = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BookDTO.class);
         assertEquals(bookDTO.getTitolo(), "IT");
@@ -101,8 +108,42 @@ class BookControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createBookDTO))).andReturn();
 
-       String error = mcvResult.getResponse().getContentAsString();
+        String error = mcvResult.getResponse().getContentAsString();
         assertEquals(error, "Author with Id " + 1 + " not found");
+    }
+
+    //boolean isPresent = bookRepository.existsByAuthor_IdAndTitolo(author.getId(), createBookDTO.getTitolo());
+    @Test
+    void addBook_WhenBookAlreadyExists() throws Exception {
+
+        Author author1 = Author.builder()
+                .id(1L)
+                .name("Mario")
+                .surname("Bianchi")
+                .build();
+        Book book1 = Book.builder()
+                .id(1L)
+                .author(author1)
+                .titolo("IT")
+                .build();
+        CreateBookDTO createBookDTO1 = CreateBookDTO.builder()
+                .titolo("IT")
+                .genreBook(GenreBook.FANTASIA)
+                .authorId(author1.getId())
+                .build();
+
+        authorRepository.save(author1);
+        bookRepository.save(book1);
+        MvcResult mvcResult = mockMvc.perform(post("/book/author/" + author1.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createBookDTO1)))
+                .andReturn();
+
+        String errorMessage = mvcResult.getResponse().getContentAsString();
+
+        assertEquals(errorMessage, "Book with title " + createBookDTO1.getTitolo() + " already exists");
+        assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
+
     }
 
     @Test
@@ -111,6 +152,26 @@ class BookControllerTest {
 
     @Test
     void getBookByTipology() {
+    }
+
+    //"/manage/{authorId}"
+    @Test
+    void changeTitleByAuthorId_WhenBookDoesntExist() throws Exception {
+
+        ModifyBookDTO modifyBookDTO = ModifyBookDTO
+                .builder()
+                .id(2L)
+                .titolo("New title")
+                .build();
+
+        MvcResult mvcResult = mockMvc.perform(patch("/book/manage/" + 4L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(modifyBookDTO)))
+                .andReturn();
+
+        String result = mvcResult.getResponse().getContentAsString();
+
+        assertEquals(result,"Book with id " + modifyBookDTO.getId() + " doesn't exist");
     }
 
     @Test

@@ -30,7 +30,7 @@ public class BookService {
         Author author = authorMapper.fromDTOtoAuthor(authorDTO);
         boolean isPresent = bookRepository.existsByAuthor_IdAndTitolo(author.getId(), createBookDTO.getTitolo());
         if(isPresent){
-            throw new Exception("Book with title " + createBookDTO.getTitolo() + "already exists");
+            throw new Exception("Book with title " + createBookDTO.getTitolo() + " already exists");
         }
         Book newBook = bookMapper.fromDTOToBook(createBookDTO, author);
         newBook = bookRepository.save(newBook);
@@ -75,7 +75,7 @@ public class BookService {
     public BookDTO changeTitleToBookDTO(Long authorId, ModifyBookDTO modifyBookDTO)throws Exception{
         Book book = bookRepository.findByAuthorIdAndId(authorId, modifyBookDTO.getId());
         if(book == null){
-            throw new Exception("Book with id " + modifyBookDTO.getId() + "doesn't exist");
+            throw new Exception("Book with id " + modifyBookDTO.getId() + " doesn't exist");
         }
         book.setTitolo(modifyBookDTO.getTitolo());
         bookRepository.save(book);
