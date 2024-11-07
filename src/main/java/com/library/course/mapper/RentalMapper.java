@@ -1,6 +1,8 @@
 package com.library.course.mapper;
 
 import com.library.course.entity.Rental;
+import com.library.course.model.BookDTO;
+import com.library.course.model.CustomerDTO;
 import com.library.course.model.RentalDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,12 +28,12 @@ public class RentalMapper {
     }
      */
 
-    public RentalDTO toDTO(Rental rental) {
+    public RentalDTO toDTO(Rental rental, CustomerDTO customerDTO, BookDTO bookDTO) {
         return RentalDTO
                 .builder()
                 .id(rental.getRentId())
-                .customer(customerMapper.toCustomerDTO(rental.getCustomer()))
-                .book(bookMapper.fromBookToDTO(rental.getBook()))
+                .customer(customerDTO)
+                .book(bookDTO)
                 .startDate(rental.getStartDate())
                 .endDate(rental.getEndDate())
                 .build();
