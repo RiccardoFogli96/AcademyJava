@@ -51,7 +51,7 @@ public class CustomerService {
 	public CustomerDTO changeCustomerStatus(Long id, CustomerStatus customerStatus) throws Exception{
 		Customer foundCustomer = customerRepository
 				.findById(id)
-				.orElseThrow(() -> new Exception("Customer iwth id: " + id + " not found."));
+				.orElseThrow(() -> new Exception("Customer with id: " + id + " not found."));
 		foundCustomer.setStatus(customerStatus);
 		customerRepository.save(foundCustomer);
 		return customerMapper.toCustomerDTO(foundCustomer);
