@@ -1,6 +1,5 @@
 package com.library.course.controller;
 
-
 import com.library.course.model.CreateBookDTO;
 import com.library.course.model.BookDTO;
 import com.library.course.model.ModifyBookDTO;
@@ -69,7 +68,7 @@ public class BookController {
     }
 
     @PatchMapping("/manage/{authorId}")
-    public ResponseEntity<?> changeTitleByAuthorId(@PathVariable("authorId") Long id, ModifyBookDTO modifyBookDTO){
+    public ResponseEntity<?> changeTitleByAuthorId(@PathVariable("authorId") Long id, @RequestBody ModifyBookDTO modifyBookDTO){
         try{
             BookDTO bookDTO = bookService.changeTitleToBookDTO(id,modifyBookDTO);
             logger.info("Change title by author's Id {} done", id);

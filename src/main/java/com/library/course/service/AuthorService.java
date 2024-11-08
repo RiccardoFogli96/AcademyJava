@@ -20,8 +20,6 @@ public class AuthorService {
     @Lazy
     private final AuthorMapper authorMapper;
     private final BookRepository bookRepository;
-    private final JwtService jwtService;
-
 
     public List<AuthorDTO> getAllAuthors(){
         return authorMapper.fromAuthorListToDTOList(authorRepository.findAll());
@@ -29,7 +27,7 @@ public class AuthorService {
 
     public AuthorDTO getAuthorDTOById( Long id)throws Exception{
         Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new Exception("Author with Id" + id + " not found"));
+                .orElseThrow(() -> new Exception("Author with Id " + id + " not found"));
         return authorMapper.fromAuthorToDTO(author);
     }
 

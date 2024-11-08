@@ -30,7 +30,7 @@ public class BookService {
         Author author = authorMapper.fromDTOtoAuthor(authorDTO);
         boolean isPresent = bookRepository.existsByAuthor_IdAndTitolo(author.getId(), createBookDTO.getTitolo());
         if(isPresent){
-            throw new Exception("Book with title " + createBookDTO.getTitolo() + "already exists");
+            throw new Exception("Book with title " + createBookDTO.getTitolo() + " already exists");
         }
         Book newBook = bookMapper.fromDTOToBook(createBookDTO, author);
         newBook = bookRepository.save(newBook);
@@ -48,7 +48,7 @@ public class BookService {
     }
 
     public List<BookDTO> getBookByTipology ( GenreBook genreBook) {
-        List<Book> book = bookRepository.findByTipologia(genreBook);
+        List<Book> book = bookRepository.findByGenreBook(genreBook);
         return book.stream().map(b -> new BookDTO(b.getTitolo(), b.getDescrizione(), b.getGenreBook(), b.getAuthor().getId(), b.getId())).toList();
     }
 
@@ -58,34 +58,24 @@ public class BookService {
         return addBook(createBookDTO);
     }
 
-    public List<BookDTO> getBookByIdAuthor(long idAuthor) {
+    public List<BookDTO> getBookByIdAuthor(long idAuthor) throws Exception {
         List<Book> listBookAuthor = bookRepository.findByAuthorId(idAuthor);
-        List<BookDTO> listBookDTOAuthor = new ArrayList<>();
-        for (Book i : listBookAuthor) {
-            BookDTO newBookResponseDTO = new BookDTO();
-            newBookResponseDTO.setId(i.getId());
-            newBookResponseDTO.setTitolo(i.getTitolo());
-            newBookResponseDTO.setDescrizione(i.getDescrizione());
-            newBookResponseDTO.setGenreBook(i.getGenreBook());
-            newBookResponseDTO.setAuthorId(i.getAuthor().getId());
-            listBookDTOAuthor.add(newBookResponseDTO);
+        if(listBookAuthor.isEmpty()){
+            throw new Exception("There is no Book with Author Id: " + idAuthor);
         }
-
-        return listBookDTOAuthor;
+        return listBookAuthor.stream().map(bookMapper::fromBookToDTO).toList();
     }
 
-    public boolean deleteBookByIdAuthor(long idAuthor){
+    public boolean deleteBookByIdAuthor(long idAuthor) throws Exception {
         List<BookDTO> listBookDTO = this.getBookByIdAuthor(idAuthor);
-        for(BookDTO i : listBookDTO){
-            bookRepository.deleteById(i.getId());
-        }
+        listBookDTO.stream().map(bookMapper::toBook).forEach(bookRepository::delete);
         return true;
     }
 
     public BookDTO changeTitleToBookDTO(Long authorId, ModifyBookDTO modifyBookDTO)throws Exception{
         Book book = bookRepository.findByAuthorIdAndId(authorId, modifyBookDTO.getId());
         if(book == null){
-            throw new Exception("Non Esisto");
+            throw new Exception("Book with id " + modifyBookDTO.getId() + " doesn't exist");
         }
         book.setTitolo(modifyBookDTO.getTitolo());
         bookRepository.save(book);

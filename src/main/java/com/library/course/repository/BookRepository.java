@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book,Long> {
-	List<Book> findByTipologia(GenreBook genreBook);
+	List<Book> findByGenreBook( GenreBook genreBook);
 	List<Book> findByAuthorId(Long authorId);
 	Book findByAuthorIdAndId(Long authorId, Long bookId);
 	void deleteByAuthorId(Long authorId);
