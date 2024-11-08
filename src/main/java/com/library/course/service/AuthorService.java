@@ -7,6 +7,7 @@ import com.library.course.model.CreateAuthorDTO;
 import com.library.course.repository.AuthorRepository;
 import com.library.course.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
+    @Lazy
     private final AuthorMapper authorMapper;
     private final BookRepository bookRepository;
     private final JwtService jwtService;
@@ -29,6 +31,12 @@ public class AuthorService {
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new Exception("Author with Id" + id + " not found"));
         return authorMapper.fromAuthorToDTO(author);
+    }
+
+    public Author getAuthorById(Long id)throws Exception{
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new Exception("Author with Id" + id + " not found"));
+        return author;
     }
 
     public AuthorDTO addNewAuthor(CreateAuthorDTO authorDTO) throws Exception{

@@ -1,6 +1,7 @@
 package com.library.course.controller;
 
 import com.library.course.model.CreateMagazineDTO;
+import com.library.course.model.MagazineDTO;
 import com.library.course.service.MagazineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MagazineController {
     private final MagazineService magazineService;
-/*
     @PostMapping("")
     public ResponseEntity<?> addMagazine(@RequestBody CreateMagazineDTO createMagazineDTO){
-        CreateMagazineDTO newMagazine = magazineService.addMagazine(createMagazineDTO);
-        return  ResponseEntity.status(HttpStatus.CREATED).body(newMagazine);
+        try{
+            MagazineDTO newMagazine = magazineService.addMagazine(createMagazineDTO);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(newMagazine);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+
     }
 
- */
+
 }
