@@ -1,5 +1,6 @@
 package com.library.course.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.library.course.entity.Author;
@@ -9,6 +10,7 @@ import com.library.course.mapper.BookMapper;
 import com.library.course.mapper.CustomerMapper;
 import com.library.course.mapper.RentalMapper;
 import com.library.course.model.CreateRentalDTO;
+import com.library.course.model.CustomerDTO;
 import com.library.course.model.GenreBook;
 import com.library.course.model.RentalDTO;
 import com.library.course.repository.AuthorRepository;
@@ -76,9 +78,35 @@ class RentalControllerTestMVC {
         MvcResult result = mockMvc.perform(post("/rentals/customers/1/books/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createRentalDTO))).andReturn();
-        ;
+
         RentalDTO rentalDTO = objectMapper.readValue(result.getResponse().getContentAsString(),RentalDTO.class);
         Assertions.assertEquals(rentalDTO.getBook().getId(),1);
+    }
+
+    @Test
+    void createRentalDTO_WhenCustomerIsNull_ThrowException() throws Exception {
+
+        CreateRentalDTO createRentalDTO = CreateRentalDTO.builder()
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.of(2024,11,7,13,0))
+                .build();
+
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .email("Customer@gmail.com")
+                .firstName("Mario")
+                .lastName("Rossi")
+                .build();
+
+
+
+        String jsonToString = objectMapper.writeValueAsString(createRentalDTO);
+
+        MvcResult result = mockMvc.perform(post("/rentals/customers/1/books/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonToString)).andReturn();
+
+        Assertions.assertEquals("Customer with id: 1 not found.", result.getResponse().getContentAsString());
+
     }
 
     @Test

@@ -105,8 +105,6 @@ class BookControllerTest {
         authorRepository.save(author);
         MvcResult mvcResult = mockMvc.perform(post("/book/author/" + author.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createBookDTO))
-        ).andReturn();
                 .content(objectMapper.writeValueAsString(createBookDTO)))
                 .andReturn();
 
@@ -117,13 +115,12 @@ class BookControllerTest {
     @Test
     void addBook_WhenAuthorIsNotPresent() throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/book/author/1")
-        MvcResult mcvResult = mockMvc.perform(post("/book/author/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createBookDTO))).andReturn();
         String error = mvcResult.getResponse().getContentAsString();
         assertEquals(error, "Author with id " + 1 + " not found");
 
-        String error = mcvResult.getResponse().getContentAsString();
+        String errorLine = mvcResult.getResponse().getContentAsString();
         assertEquals(error, "Author with Id " + 1 + " not found");
     }
 
@@ -166,6 +163,17 @@ class BookControllerTest {
     }
 
     @Test
+    void getBookById_When_AllOkay() {
+    }
+
+
+    /*
+    @Test
+    void getBookById() {
+    }
+     */
+
+    @Test
     void getBookByTipology() {
     }
 
@@ -180,8 +188,8 @@ class BookControllerTest {
                 .build();
 
         MvcResult mvcResult = mockMvc.perform(patch("/book/manage/" + 4L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(modifyBookDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(modifyBookDTO)))
                 .andReturn();
 
         String result = mvcResult.getResponse().getContentAsString();

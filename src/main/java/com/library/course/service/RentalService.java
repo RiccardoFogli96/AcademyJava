@@ -36,11 +36,12 @@ public class RentalService {
     private final CustomerMapper customerMapper;
 
     public RentalDTO createRentalDTO(Long customerId, Long bookId, CreateRentalDTO createRentalDTO) throws Exception {
+
+        Customer customer = customerService.getCustomerByID(customerId);
+        CustomerDTO customerDTO = customerMapper.toCustomerDTO(customer);
         if (createRentalDTO == null) {
             throw new Exception("CreateRentalDTO is null");
         }
-        Customer customer = customerService.getCustomerByID(customerId);
-        CustomerDTO customerDTO = customerMapper.toCustomerDTO(customer);
         Book book = bookService.getBookById(bookId);
         BookDTO bookDTO = bookMapper.fromBookToDTO(book);
         Rental rental = new Rental(createRentalDTO.getStartDate(), createRentalDTO.getEndDate(), customer, book);

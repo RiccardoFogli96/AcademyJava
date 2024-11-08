@@ -3,8 +3,10 @@ package com.library.course.service;
 import com.library.course.entity.Book;
 import com.library.course.entity.Customer;
 import com.library.course.entity.Rental;
+import com.library.course.mapper.CustomerMapper;
 import com.library.course.mapper.RentalMapper;
 import com.library.course.model.CreateRentalDTO;
+import com.library.course.model.CustomerDTO;
 import com.library.course.model.GenreBook;
 import com.library.course.model.RentalDTO;
 import com.library.course.repository.RentalRepository;
@@ -43,6 +45,8 @@ class RentalServiceTest {
     private RentalMapper rentalMapper;
     @Mock
     private CheckCustomerStatus checkCustomerStatus;
+    @Mock
+    private CustomerMapper customerMapper;
 
     @InjectMocks
     private RentalService rentalService;
@@ -67,8 +71,35 @@ class RentalServiceTest {
     }
 
     @Test
-    void createRentalDTO_WhenRentalDTOIsNull_ThrowException() {
+    void createRentalDTO_WhenRentalDTOIsNull_ThrowException() throws Exception {
 
+        CreateRentalDTO createRentalDTO = null;
+        Customer customer = Customer.builder().email("Customer@gmail.com").id(1L).firstName("Mario").lastName("Rossi").build();
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .id(1L)
+                .firstName("Mario")
+                .lastName("Rossi")
+                .email("Customer@gmail.com")
+                .build();
+
+        Long customerId = 1L;
+
+        when(customerService.getCustomerByID(customerId)).thenReturn(customer);
+        when(customerMapper.toCustomerDTO(customer)).thenReturn(customerDTO);
+
+        String errorMessage = null;
+
+        try {
+            rentalService.createRentalDTO(customerId, 1L, createRentalDTO);
+        } catch (Exception exception){
+
+            errorMessage = exception.getMessage();
+        }
+
+        Exception exception = Assertions.assertThrows(Exception.class, ()-> rentalService.createRentalDTO(customerId, 1L, createRentalDTO));
+
+        Assertions.assertEquals("CreateRentalDTO is null", exception.getMessage());
+        Assertions.assertEquals("CreateRentalDTO is null", errorMessage);
     }
 
     @Test
