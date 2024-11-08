@@ -1,17 +1,19 @@
 package com.library.course.controller;
 
+import com.library.course.entity.Author;
 import com.library.course.model.CreateMagazineDTO;
 import com.library.course.service.MagazineService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("magazine/")
+@RequestMapping("/magazine")
 @RequiredArgsConstructor
 public class MagazineController {
     private final MagazineService magazineService;
@@ -23,4 +25,9 @@ public class MagazineController {
     }
 
  */
+
+    @GetMapping()
+    public ResponseEntity< List<Author >> getListAuthor( @RequestBody CreateMagazineDTO createMagazineDTO ) throws Exception {
+        return ResponseEntity.ok(magazineService.getListAuthor(createMagazineDTO));
+    }
 }

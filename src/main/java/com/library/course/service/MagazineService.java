@@ -30,11 +30,11 @@ public class MagazineService {
         return null;
     }
 
-    public List<Author> getListAuthor(CreateMagazineDTO createMagazineDTO) {
+    public List<Author> getListAuthor(CreateMagazineDTO createMagazineDTO) throws Exception {
         List<Long> authorIdList = createMagazineDTO.getAuthorIdList();
         List<Author> authors = authorService.findAllById(authorIdList);
         if(authors.size() != authorIdList.size()){
-            log.warn("Some authors could not be found {}", authorIdList);
+            throw new Exception("Some authors could not be found !");
         }
         return authors;
     }
