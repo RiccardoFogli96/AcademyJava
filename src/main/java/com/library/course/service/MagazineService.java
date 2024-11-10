@@ -24,9 +24,19 @@ public class MagazineService {
     private final AuthorService authorService;
     private final AuthorMapper authorMapper;
 
-    public MagazineDTO addMagazine( CreateMagazineDTO createMagazineDTO) throws Exception{
-       Magazine magazine = magazineMapper.createMagazineDTOToMagazine(createMagazineDTO, authorMapper.fromAuthorIdListToAuthorList(createMagazineDTO.getAuthorIdList()));
-       return magazineMapper.toMagazineDTO(magazineRepository.save(magazine),authorMapper.fromAuthorListToDTOList(magazine.getAuthorList()));
+    public CreateMagazineDTO addMagazine( CreateMagazineDTO createMagazineDTO) throws Exception{
+        if (createMagazineDTO.getAuthorIdList()==null){
+            createMagazineDTO.setAuthorIdList(new ArrayList<Long>());
+        }
+        List<Author> authorsList = authorService.fromAuthorIdListToAuthorList(createMagazineDTO.getAuthorIdList());
+
+        if(createMagazineDTO.getAuthorIdList().size() != authorsList.size()){
+            throw new Exception("Some authors could not be found !");
+        }
+
+        Magazine magazine = magazineMapper.createMagazineDTOToMagazine(createMagazineDTO, authorsList);
+
+       return magazineMapper.magazineToMagazineDTO(magazineRepository.save(magazine));
     }
 
     public List<Author> getListAuthor(CreateMagazineDTO createMagazineDTO) throws Exception {

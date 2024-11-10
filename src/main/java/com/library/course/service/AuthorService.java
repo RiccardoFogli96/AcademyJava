@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,7 +18,6 @@ import java.util.List;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
-    @Lazy
     private final AuthorMapper authorMapper;
     private final BookRepository bookRepository;
 
@@ -63,5 +63,15 @@ public class AuthorService {
 
     public List<Author> findAllById(List<Long> ids){
         return authorRepository.findAllByIdIn(ids);
+    }
+
+    public List<Long> getListIdAuthorFromListAuthor(List<Author> authorList) {
+        List<Long> authorIdList = new ArrayList<>();
+        authorList.forEach(a->authorIdList.add(a.getId()));
+        return authorIdList;
+    }
+
+    public List<Author> fromAuthorIdListToAuthorList(List<Long> authorList){
+        return authorList.stream().map(i->authorRepository.getReferenceById(i)).toList();
     }
 }

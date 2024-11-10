@@ -64,7 +64,7 @@ class MagazineControllerTest {
 		MvcResult result = mockMvc.perform(get("/magazine").content(objectMapper.writeValueAsString(createMagazineDTO)).contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
 
-		result.getResponse().getContentAsString().
+		result.getResponse().getContentAsString();
 
 	}
 }

@@ -19,7 +19,7 @@ public class MagazineController {
     @PostMapping("")
     public ResponseEntity<?> addMagazine(@RequestBody CreateMagazineDTO createMagazineDTO){
         try{
-            MagazineDTO newMagazine = magazineService.addMagazine(createMagazineDTO);
+            CreateMagazineDTO newMagazine = magazineService.addMagazine(createMagazineDTO);
             return  ResponseEntity.status(HttpStatus.CREATED).body(newMagazine);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

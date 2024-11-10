@@ -5,6 +5,7 @@ import com.library.course.entity.Magazine;
 import com.library.course.model.AuthorDTO;
 import com.library.course.model.CreateMagazineDTO;
 import com.library.course.model.MagazineDTO;
+import com.library.course.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class MagazineMapper {
-
+private final AuthorService authorService;
     public Magazine createMagazineDTOToMagazine( CreateMagazineDTO createMagazineDTO, List<Author> authors ){
         return Magazine
                 .builder()
@@ -33,6 +34,17 @@ public class MagazineMapper {
                 .title(magazine.getTitle())
                 .authorList(authorDTOS)
 		        .build();
+    }
+
+    public CreateMagazineDTO magazineToMagazineDTO(Magazine magazine){
+        return CreateMagazineDTO
+                .builder()
+                .numberMagazine(magazine.getNumberMagazine())
+                .tipologyMagazine(magazine.getTipologyMagazine())
+                .publishedDate(magazine.getPublishedDate())
+                .title(magazine.getTitle())
+                .authorIdList(authorService.getListIdAuthorFromListAuthor(magazine.getAuthorList()))
+                .build();
     }
 
 }

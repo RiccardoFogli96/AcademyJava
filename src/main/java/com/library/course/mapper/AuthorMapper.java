@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AuthorMapper {
-    private final AuthorService authorService;
+
     public Author fromDTOtoAuthor(AuthorDTO authorDTO) {
         return Author.builder()
                 .name(authorDTO.getName())
@@ -47,22 +47,7 @@ public class AuthorMapper {
     }
 
     public List<Long> fromAuthorListToLongList(List<Author> authorList) {
-        List<Long> longList = new ArrayList<>();
-        authorList.forEach(a->longList.add(a.getId()));
-        return longList;
+        return authorList.stream().map(i->i.getId()).toList();
     }
-
-    public List<Author> fromAuthorIdListToAuthorList(List<Long> authorList) throws Exception{
-        List<Author> authorIdList = new ArrayList<>();
-        authorList.forEach(a-> {
-            try {
-                authorIdList.add(authorService.getAuthorById(a));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        return authorIdList;
-    }
-
 
 }
