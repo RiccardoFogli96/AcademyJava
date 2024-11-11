@@ -3,12 +3,19 @@ package com.library.course.mapper;
 import com.library.course.entity.Author;
 import com.library.course.model.AuthorDTO;
 import com.library.course.model.CreateAuthorDTO;
+import com.library.course.service.AuthService;
+import com.library.course.service.AuthorService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class AuthorMapper {
+
     public Author fromDTOtoAuthor(AuthorDTO authorDTO) {
         return Author.builder()
                 .name(authorDTO.getName())
@@ -39,5 +46,8 @@ public class AuthorMapper {
         return authorList.stream().map(this::fromAuthorToDTO).toList();
     }
 
+    public List<Long> fromAuthorListToLongList(List<Author> authorList) {
+        return authorList.stream().map(i->i.getId()).toList();
+    }
 
 }
