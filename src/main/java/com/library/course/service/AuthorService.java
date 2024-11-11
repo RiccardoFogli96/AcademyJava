@@ -72,6 +72,9 @@ public class AuthorService {
     }
 
     public List<Author> fromAuthorIdListToAuthorList(List<Long> authorList){
+        if (authorList.isEmpty()||authorList==null){
+            return new ArrayList<Author>();
+        }
         return authorList.stream().map(i->authorRepository.getReferenceById(i)).toList();
     }
 }

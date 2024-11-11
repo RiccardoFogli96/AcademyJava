@@ -28,7 +28,7 @@ public class MagazineService {
         if (createMagazineDTO.getAuthorIdList()==null){
             createMagazineDTO.setAuthorIdList(new ArrayList<Long>());
         }
-        List<Author> authorsList = authorService.fromAuthorIdListToAuthorList(createMagazineDTO.getAuthorIdList());
+        List<Author> authorsList = authorService.findAllById(createMagazineDTO.getAuthorIdList());
 
         if(createMagazineDTO.getAuthorIdList().size() != authorsList.size()){
             throw new Exception("Some authors could not be found !");
